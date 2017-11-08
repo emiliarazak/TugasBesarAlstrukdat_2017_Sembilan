@@ -1,6 +1,6 @@
 /*File unit.h/
 /By: Emilia Andari Razak/13515056*/
-/*Last updated: 08-11-2017 11:00*/
+/*Last updated: 08-11-2017 11:13*/
 
 #ifndef unit_H
 #define unit_H
@@ -18,6 +18,8 @@ typedef struct {
 	const int max_health;
 	int health;
 	int attack;
+	int heal;
+	/*selain white mage bernilai 0*/
 	const int max_mov_points;
 	int mov_points;
 	const int atk_type;
@@ -46,13 +48,20 @@ yang dimiliki WhiteMage*/
 void CreateWhiteMage(Unit *w);
 
 /*Memindahkan unit ke suatu koordinat*/
+/*Prekondisi: final_coordinate terdefinisi*/
 void MoveUnit(Unit *X, Point final_coordinate);
 
 /*Unit X melakukan serangan terhadap unit Y*/
 /*Implementasi probabilitas*/
-void Attack(Unit *X, Unit *Y);
+/*Prekondisi: Adajcent*/
+void Attack(Unit X, Unit *Y);
 
 /*Unit X melakukan retaliation terhadap unit Y*/
 /*Implementasi probabilitas*/
-void Retaliate(Unit *X, Unit *Y);
+/*Prekondisi: Adajcent*/
+void Retaliate(Unit X, Unit *Y);
+
+/*Unit X melakukan heal terhadap unit Y*/
+/*Prekondisi: Adjacent, hanya bisa dilakukan oleh white mage id=4*/
+void Heal(Unit X, Unit *Y);
 #endif

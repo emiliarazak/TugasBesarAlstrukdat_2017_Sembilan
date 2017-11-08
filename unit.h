@@ -28,6 +28,7 @@ typedef struct {
 	boolean atk_chance;
 	//Point location;
 	const int recruitment_price;
+	const int upkeep_price;
 }Unit;
 
 /*Create Unit*/

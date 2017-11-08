@@ -1,6 +1,6 @@
 /*File unit.h/
 /By: Emilia Andari Razak/13515056*/
-/*Last updated: 08-11-2017 08:49*/
+/*Last updated: 08-11-2017 11:00*/
 
 #ifndef unit_H
 #define unit_H
@@ -31,22 +31,22 @@ typedef struct {
 /*Create Unit*/
 /*Create King, Inisialisasi semua attribute dengan attribute 
 yang dimiliki King*/
-void CreateKing(Unit *u);
+void CreateKing(Unit *k);
 
 /*Create Archer, Inisialisasi semua attribute dengan attribute 
 yang dimiliki Archer*/
-void CreateArcher(Unit *u);
+void CreateArcher(Unit *a);
 
 /*Create Swordsman, Inisialisasi semua attribute dengan attribute 
 yang dimiliki Swordsman*/
-void CreateSwordsman(Unit *u);
+void CreateSwordsman(Unit *s);
 
 /*Create WhiteMage, Inisialisasi semua attribute dengan attribute 
 yang dimiliki WhiteMage*/
-void CreateWhiteMage(Unit *u);
+void CreateWhiteMage(Unit *w);
 
 /*Memindahkan unit ke suatu koordinat*/
-void MoveUnit(Unit *u, Point final_coordinate);
+void MoveUnit(Unit *X, Point final_coordinate);
 
 /*Unit X melakukan serangan terhadap unit Y*/
 /*Implementasi probabilitas*/

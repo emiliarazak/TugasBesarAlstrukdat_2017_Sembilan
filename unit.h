@@ -17,16 +17,19 @@ typedef struct {
 		id==4: White Mage*/
 	const int max_health;
 	int health;
+	/*damage*/
 	int attack;
-	int heal;
 	/*selain white mage bernilai 0*/
+	int heal;
 	const int max_mov_points;
 	int mov_points;
 	const int atk_type;
 	/* 	atk_type==1 : melee
 		atk_type==2	: ranged*/
 	boolean atk_chance;
-	//Point location;
+	POINT location;
+	/*Untuk implementasi probabilitas serangan, evasion=kemungkinan menghindar*/
+	const float evasion;
 	const int recruitment_price;
 	const int upkeep_price;
 }Unit;
@@ -48,9 +51,21 @@ void CreateSwordsman(Unit *s);
 yang dimiliki WhiteMage*/
 void CreateWhiteMage(Unit *w);
 
+/*Mengirimkan kondisi kematian Unit X*/
+boolean IsDead(Unit X);
+
+/*Mengirimkan kondisi kesempatan menyerang Unit X*/
+boolean CanAttack(Unit X);
+
+/*Menentukan letak unit*/
+void SetLocation(Unit *X, float x, float y
+
+/*Mengembalikan lokasi Unit X*/
+POINT GetLocation(Unit X);
+
 /*Memindahkan unit ke suatu koordinat*/
 /*Prekondisi: final_coordinate terdefinisi*/
-void MoveUnit(Unit *X, Point final_coordinate);
+void MoveUnit(Unit *X, POINT final_coordinate);
 
 /*Unit X melakukan serangan terhadap unit Y*/
 /*Implementasi probabilitas*/

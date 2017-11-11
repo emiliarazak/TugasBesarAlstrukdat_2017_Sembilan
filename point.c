@@ -8,7 +8,7 @@
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
 /* Membentuk sebuah POINT dari komponen-komponennya */
-POINT MakePOINT (float X, float Y) {
+POINT MakePOINT (int X, int Y) {
 	POINT p;
 
 	Absis(p)=X;

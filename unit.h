@@ -10,29 +10,29 @@
 
 /*Definisi Tipe Data*/
 typedef struct {
-	const int id;
+	 int id;
 	/*	id==1: King
 		id==2: Archer
 		id==3: Swordsman
 		id==4: White Mage*/
-	const int max_health;
+	 int max_health;
 	int health;
 	/*damage*/
 	int attack;
 	/*selain white mage bernilai 0*/
 	int heal;
-	const int max_mov_points;
+	 int max_mov_points;
 	int mov_points;
-	const int atk_type;
+	 int atk_type;
 	/* 	atk_type==1 : melee
 		atk_type==2	: ranged*/
 	boolean atk_chance;
 	POINT location;
 	/*Untuk implementasi probabilitas serangan, evasion=kemungkinan menghindar*/
-	const float evasion;
-	const int recruitment_price;
-	const int upkeep_price;
-}Unit;
+	 float evasion;
+	 int recruitment_price;
+	 int upkeep_price;
+} Unit;
 
 /*Create Unit*/
 /*Create King, Inisialisasi semua attribute dengan attribute 
@@ -58,7 +58,7 @@ boolean IsDead(Unit X);
 boolean CanAttack(Unit X);
 
 /*Menentukan letak unit*/
-void SetLocation(Unit *X, float x, float y
+void SetLocation(Unit *X, int x, int y);
 
 /*Mengembalikan lokasi Unit X*/
 POINT GetLocation(Unit X);

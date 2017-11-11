@@ -1,9 +1,13 @@
 /*File unit.c/
 /By: Emilia Andari Razak/13515056*/
-/*Last updated: 10-11-2017 08:52 */
+/*Last updated: 11-11-2017 15:17 */
 
 #include "boolean.h"
 #include "point.h"
+#include "unit.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
 /*Create Unit*/
 /*Create King, Inisialisasi semua attribute dengan attribute 
@@ -105,31 +109,113 @@ void CreateWhiteMage(Unit *w) {
 
 /*Mengirimkan kondisi kematian Unit X*/
 boolean IsDead(Unit X) {
-	return (X.health==0);
+	return ((X).health==0);
 }
 
 /*Mengirimkan kondisi kesempatan menyerang Unit X*/
 boolean CanAttack(Unit X) {
-	return (X.atk_chance);
+	return ((X).atk_chance);
 }
 
 /*Menentukan letak unit*/
-void SetLocation(Unit *X, float x, float y);
+void SetLocation(Unit *X, int x, int y) {
+	POINT P;
+	P=MakePOINT(x,y);
+	(*X).location=P;
+}
 
 /*Mengembalikan lokasi Unit X*/
-POINT GetLocation(Unit X);
+POINT GetLocation(Unit X) {
+	return (X.location);
+}
 
 /*Memindahkan unit ke suatu koordinat*/
-void MoveUnit(Unit *X, Point final_coordinate);
+/*Prekondisi: final_coordinate terdefinisi*/
+void MoveUnit(Unit *X, POINT final_coordinate) {
+	POINT P;
+	P=(*X).location;
+
+	int jarakX, jarakY, jarak;
+	jarakX=Absis(final_coordinate)-Absis(P);
+	if(jarakX<0){
+		jarakX=-jarakX;
+	}
+	jarakY=Ordinat(final_coordinate)-Ordinat(P);
+	if(jarakY<0){
+		jarakY=-jarakY;
+	}
+	jarak=jarakX+jarakY;
+
+	if((*X).mov_points-jarak>=0){
+		SetLocation(X,Absis(final_coordinate),Ordinat(final_coordinate));
+	}
+}
 
 /*Unit X melakukan serangan terhadap unit Y*/
 /*Implementasi probabilitas*/
-void Attack(Unit *X, Unit *Y);
+/*Prekondisi: Adjacent*/
+void Attack(Unit X, Unit *Y) {
+	if(CanAttack(X)){
+		int r;
+		srand(time(NULL));
+		/* random int between 1 and 10 */
+		r=rand()%10+1;
+		int chance=(*Y).evasion*10;
+		chance=10-chance;
+		if(r<=chance){
+			(*Y).health-=X.attack;
+		}
+		X.atk_chance=false;
+		printf("r: %d\n", r);
+		printf("chance: %d\n", chance);
+	}
+	
+}
 
 /*Unit X melakukan retaliation terhadap unit Y*/
 /*Implementasi probabilitas*/
-void Retaliate(Unit *X, Unit *Y);
+/*Prekondisi: Adjacent*/
+void Retaliate(Unit X, Unit *Y) {
+	if(!IsDead(X)){
+		if((X).id==1){
+			int r;
+			srand(time(NULL));
+			/* random int between 1 and 10 */
+			r=rand()%10+1;
+			int chance=(*Y).evasion*10;
+			chance=10-chance;
+			if(r<=chance){
+				(*Y).health-=X.attack;
+			}
+			printf("r: %d\n", r);
+			printf("chance: %d\n", chance);
+		}
+		else{
+			if((X).atk_type==(*Y).atk_type){
+				int r;
+				srand(time(NULL));
+				/* random int between 1 and 10 */
+				r=rand()%10+1;
+				int chance=(*Y).evasion*10;
+				chance=10-chance;
+				if(r<=chance){
+					(*Y).health-=X.attack;
+				}
+				printf("r: %d\n", r);
+				printf("chance: %d\n", chance);
+			}
+		}
+		
+	}
+}
 
 /*Unit X melakukan heal terhadap unit Y*/
-/*Prekondisi: Adjacent, hanya bisa dilakukan oleh white mage id=4*/
-void Heal(Unit X, Unit *Y);
+/*Prekondisi: Adjacent*/
+void Heal(Unit X, Unit *Y) {
+	if((X).id==4){
+		(*Y).health+=(X).heal;
+		if((*Y).health>(*Y).max_health){
+			(*Y).health=(*Y).max_health;
+		}
+	}
+}

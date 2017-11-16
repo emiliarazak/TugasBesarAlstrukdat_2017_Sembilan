@@ -1,6 +1,6 @@
 /*File unit.c/
 /By: Emilia Andari Razak/13515056*/
-/*Last updated: 11-11-2017 15:17 */
+/*Last updated: 16-11-2017 19:21 */
 
 #include "boolean.h"
 #include "point.h"
@@ -129,6 +129,16 @@ POINT GetLocation(Unit X) {
 	return (X.location);
 }
 
+/*Mengembalikan upkeep price Unit X*/
+int GetUpKeepPrice(Unit X) {
+	return ((X).upkeep_price);
+}
+
+/*Mengembalikan recruitment price Unit X*/
+int GetRecruitmentPrice(Unit X) {
+	return ((X).recruitment_price);
+}
+
 /*Memindahkan unit ke suatu koordinat*/
 /*Prekondisi: final_coordinate terdefinisi*/
 void MoveUnit(Unit *X, POINT final_coordinate) {
@@ -218,4 +228,39 @@ void Heal(Unit X, Unit *Y) {
 			(*Y).health=(*Y).max_health;
 		}
 	}
+}
+
+/*Print attribute: lokasi, health/maxhealth, movement points, can_attack*/
+void PrintUnit(Unit X) {
+	printf("Unit: ");
+	if((X).id==1){
+		printf("King ");
+	}
+	else if((X).id==2){
+		printf("Archer ");
+	}
+	else if((X).id==3){
+		printf("Swordsman ");
+	}
+	else if((X).id==4){
+		printf("White Mage ");
+	}
+
+	printf("(%d,%d)", Absis(GetLocation(X)), Ordinat(GetLocation(X)));
+	printf(" | ");
+	printf("Health ");
+	printf("%d/%d", (X).health, (X).max_health);
+	printf(" | ");
+	printf("Movement Point: ");
+	printf("%d", (X).mov_points);
+	printf(" | ");
+	printf("Can Attack: ");
+	if(CanAttack(X)){
+		printf("Yes");
+	}
+	else{
+		printf("No");
+	}
+
+
 }

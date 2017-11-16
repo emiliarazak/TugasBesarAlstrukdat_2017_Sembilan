@@ -1,6 +1,6 @@
 /*File unit.h/
 /By: Emilia Andari Razak/13515056*/
-/*Last updated: 10-11-2017 08:52*/
+/*Last updated: 16-11-2017 19:21*/
 
 #ifndef unit_H
 #define unit_H
@@ -15,7 +15,7 @@ typedef struct {
 		id==2: Archer
 		id==3: Swordsman
 		id==4: White Mage*/
-	 int max_health;
+	int max_health;
 	int health;
 	/*damage*/
 	int attack;
@@ -33,6 +33,7 @@ typedef struct {
 	 int recruitment_price;
 	 int upkeep_price;
 } Unit;
+
 
 /*Create Unit*/
 /*Create King, Inisialisasi semua attribute dengan attribute 
@@ -63,6 +64,12 @@ void SetLocation(Unit *X, int x, int y);
 /*Mengembalikan lokasi Unit X*/
 POINT GetLocation(Unit X);
 
+/*Mengembalikan upkeep price Unit X*/
+int GetUpKeepPrice(Unit X);
+
+/*Mengembalikan recruitment price Unit X*/
+int GetRecruitmentPrice(Unit X);
+
 /*Memindahkan unit ke suatu koordinat*/
 /*Prekondisi: final_coordinate terdefinisi*/
 void MoveUnit(Unit *X, POINT final_coordinate);
@@ -80,4 +87,7 @@ void Retaliate(Unit X, Unit *Y);
 /*Unit X melakukan heal terhadap unit Y*/
 /*Prekondisi: Adjacent, hanya bisa dilakukan oleh white mage id=4*/
 void Heal(Unit X, Unit *Y);
+
+/*Print attribute: lokasi, health/maxhealth, movement points, can_attack*/
+void PrintUnit(Unit X);
 #endif

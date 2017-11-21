@@ -16,9 +16,9 @@ Created at: 16/11/2017
 
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define AbsisMin 0
-#define AbsisMax 15
+#define AbsisMax 20
 #define OrdMin 0
-#define OrdMax 15
+#define OrdMax 20
 
 typedef struct{
 	int id; /* untuk bangunan: (1) Tower, (2) Castel, (3) Village, (0) blank */
@@ -42,31 +42,30 @@ typedef struct {
 	int NOrdEff; /* banyaknya/ukuran ordinat yg terdefinisi */
 } Map;
 
-#define AbsisEff(M) (M).NAbsisEff
-#define OrdEff(M) (M).NOrdEff
+extern Map M;
 
-ElType getElmt(Map M, int x, int y);
+ElType getElmt(int x, int y);
 /* Mengembalikan element dari di petak x dan y */
 
-int getBangunanId(Map M, int x, int y);
+int getBangunanId(int x, int y);
 /* Mengembalikan id bangunan di petak x dan y */
 
-int getBangunanOwner(Map M, int x, int y);
+int getBangunanOwner(int x, int y);
 /* Mengembalikan pemilik bangunan di petak x dan y */
 
-int getUnitId(Map M, int x, int y);
+int getUnitId(int x, int y);
 /* Mengembalikan id unit di petak x dan y */
 
-int getUnitOwner(Map M, int x, int y);
+int getUnitOwner(int x, int y);
 /* Mengembalikan pemilik unit di petak x dan y */
 
-Map CreateEmptyMap(int X, int Y);
+void MakeEmptyMap(int X, int Y);
 /* Membuat petak normal sebanyak X * Y */
 
-void InitMap(Map * M);
+void InitMap(int X, int Y);
 /* Membuat map dengan ukuran X * Y */
 
-void PrintMap(Map M);
+void PrintMap();
 /* Mencetak Map secara keseluruhan */
 
 void printBangunan(BangunanMap bangunan);
@@ -75,14 +74,14 @@ void printBangunan(BangunanMap bangunan);
 void printUnit(UnitMap unit);
 /* Mencetak unit dengan warna tertentu */	
 
-void UpdateUnitMap(Map * M, POINT P, int newId, int pemilik);
+void UpdateUnitMap(POINT P, int newId, int pemilik);
 /* I.S: map sudah diinisialisasi */
 /* x dan y adalah posisi absis dan ordinat yang baru */
 /* newId adalah id unit yang baru */
 /* isi dari newId: (1) King, (2) Archer, (3) Swordsman, (4) White Mage, (0) blank */
 /* Mengubah posisi dari unit yang ada di map */
 
-void UpdateBangunanMap(Map * M, POINT P, int newId, int pemilik);
+void UpdateBangunanMap(POINT P, int newId, int pemilik);
 /* I.S: map sudah diinisialisasi */
 /* x dan y adalah posisi absis dan ordinat yang baru */
 /* newId adalah id bangunan yang baru */
@@ -90,41 +89,44 @@ void UpdateBangunanMap(Map * M, POINT P, int newId, int pemilik);
 /* Mengubah posisi dari bangunan yang ada di map */
 
 /*** Untuk keperluan move ***/
-boolean IsPosisiTerkiri(Map M, POINT P);
+boolean IsPosisiTerkiri(POINT P);
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kiri map */
 /* tapi bukan di ujung map */
 
-boolean IsPosisiTerkanan(Map M, POINT P);
+boolean IsPosisiTerkanan(POINT P);
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kanan map */
 /* tapi bukan di ujung map */
 
-boolean IsPosisiPalingAtas(Map M, POINT P);
+boolean IsPosisiPalingAtas(POINT P);
 /* Mengembalikan true bila posisi (_, y) ada di paling atas map */
 /* tapi bukan di ujung map */
 
-boolean IsPosisiPalingBawah(Map M, POINT P);
+boolean IsPosisiPalingBawah(POINT P);
 /* Mengembalikan true bila posisi (_, y) ada di paling bawah map */
 /* tapi bukan di ujung map */
 
-boolean IsPosisiUjung(Map M, POINT P);
+boolean IsPosisiUjung(POINT P);
 /* Mengembalikan true bila posisi (x, y) ada di ujung map */
 
-POINT * getCastle(Map M, int id);
+POINT * getCastle(int id);
 /* Mengembalikan castle yang dimiliki oleh player nya */
 
 char getId(int tipe, int id);
 /* Mengembalikan tanda untuk bangunan atau unit */
 
-void setBangunanKerajaan(Map * M, int cX, int cY, int playerId);
+void setBangunanKerajaan(int cX, int cY, int playerId);
 /* Membuat bangunan kerajaan milik player dengan id playerId */
 /* cX adalah absis tower dan cY adalah ordinat tower */
 
-void setVillage(Map * M, int numVillage);
+void setVillage(int numVillage);
 /* I.S: ukuran peta sudah diinisialisasi */
 /* Meletakkan village tanpa pemilik secara random 
    tanpa mengganggu letak kerajaan */
 
-POINT getRandomPoint(Map M);
+POINT getRandomPoint();
 /* mencari point yang masih kosong secara random */
+
+boolean IsNoUnit(int x, int y);
+/* Mengembalikan true bila dalam x dan y tidak ada unit */	
 
 #endif

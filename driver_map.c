@@ -7,12 +7,12 @@ int main(){
 		printf("Masukan Ukuran Peta(X,Y): ");
 		scanf("%d",&N);
 		scanf("%d",&M);
-		if ((N<8)||(M<8)||(N>20)||(M>20))
+		if ((N<8)||(M<8)||(N>100)||(M>100))
 		{
-			printf("Ukuran peta minimal 8x8 dan maksimal 20x20\n");
+			printf("Ukuran peta minimal 8x8 dan maksimal 100x100\n");
 		}
 	} 
-	while((N<8)||(M<8)||(N>20)||(M>20));
+	while((N<8)||(M<8)||(N>100)||(M>100));
 	InitMap(N,M);
 	PrintMap();
 	return 0;

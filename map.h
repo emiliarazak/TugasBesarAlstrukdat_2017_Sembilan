@@ -16,9 +16,9 @@ Created at: 16/11/2017
 
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define AbsisMin 0
-#define AbsisMax 20
+#define AbsisMax 100
 #define OrdMin 0
-#define OrdMax 20
+#define OrdMax 100
 
 typedef struct{
 	int id; /* untuk bangunan: (1) Tower, (2) Castel, (3) Village, (0) blank */

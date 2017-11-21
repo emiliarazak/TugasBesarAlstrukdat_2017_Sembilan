@@ -59,12 +59,12 @@ void InitMap(int X, int Y){
 	/* buat kerajaan player 1, ujung kiri-bawah */
 	cX = AbsisMin + 1;
 	cY = M.NOrdEff - 2;
-	setBangunanKerajaan(cX, cY, 1);
+	setBangunanKerajaan(cX, cY, 2);
 	
 	/* buat kerajaan player 2, ujung kanan-atas */
 	cX = M.NAbsisEff - 2;
 	cY = OrdMin + 1;
-	setBangunanKerajaan(cX, cY, 2);
+	setBangunanKerajaan(cX, cY, 1);
 	
 	setVillage(M.NOrdEff - 2);
 }
@@ -109,45 +109,33 @@ void PrintMap(){
 	} printf("*\n");
 }
 
-void PrintAngkaAbsis(int X)
-{
-	//Menampilkan angka yang ada disebelah kiri map
-	if (GetDigit(X)==2)
-	{
+void PrintAngkaAbsis(int X){
+/* Menampilkan angka yang ada disebelah kiri map */
+	if(GetDigit(X)==2){
 		printf(" %d ", X);
-	}
-	else
-	{
+	}else{
 		printf("  %d ", X);
 	}
 }
 
-void PrintAngkaOrdinat(int Y)
-{
-	//Menampilkan angka diatas Map
-	if (GetDigit(Y)==2)
-	{
+void PrintAngkaOrdinat(int Y){
+/* Menampilkan angka diatas Map */
+	if(GetDigit(Y)==2){
 		printf("  %d", Y);
-	}
-	else
-	{
+	}else{
 		printf("   %d", Y);
 	}
 }
 
-int GetDigit(int X)
-{
-	int N=X;
-	int Digit =0;
-	if(N==0)
-	{
+int GetDigit(int X){
+/* Menghasilkan digit dari X */
+	int N = X;
+	int Digit = 0;
+	if(N == 0){
 		Digit=1;
-	}
-	else 
-	{
-		while(N>0)
-		{
-			N= N/10;
+	}else{
+		while(N > 0){
+			N = N / 10;
 			Digit++;
 		}
 	}
@@ -229,6 +217,18 @@ boolean IsPosisiUjung(POINT P){
 /* Mengembalikan true bila posisi (x, y) ada di ujung map */
 	return ((Absis(P) == AbsisMin || Absis(P) == M.NAbsisEff) && 
 		(Ordinat(P) == OrdMin || Ordinat(P) == M.NOrdEff));
+}
+
+boolean IsKingInTower(int playerId){
+/* Mengembalikan true jika King berada di tower miliknya */
+	int cX = M.NAbsisEff - 2;
+	int cY = OrdMin + 1;
+	return (getUnitId(cX, cY) == 1); // king ada di tower
+}
+
+boolean IsCastleEmpty(int x, int y){
+/* Memeriksa apakah castle tersebut kosong */
+	return (getUnitId(x, y) == 0);
 }
 
 POINT * getCastle(int id){

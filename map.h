@@ -69,13 +69,13 @@ void PrintMap();
 /* Mencetak Map secara keseluruhan */
 
 void PrintAngkaAbsis(int X);
-	//Menampilkan angka yang ada disebelah kiri map
+/* Menampilkan angka yang ada disebelah kiri map */
 
 void PrintAngkaOrdinat(int Y);
-	//Menampilkan angka diatas Map
+/* Menampilkan angka diatas Map */
 
 int GetDigit(int X);
-//Mengembalikan digit dari angka X
+/* Mengembalikan digit dari angka X */
 
 void printBangunan(BangunanMap bangunan);
 /* Mencetak bangunan dengan warna tertentu */
@@ -116,6 +116,12 @@ boolean IsPosisiPalingBawah(POINT P);
 
 boolean IsPosisiUjung(POINT P);
 /* Mengembalikan true bila posisi (x, y) ada di ujung map */
+
+boolean IsKingInTower(int playerId);
+/* Mengembalikan true jika King berada di tower miliknya */
+
+boolean IsCastleEmpty(int x, int y);
+/* Memeriksa apakah castle tersebut kosong */
 
 POINT * getCastle(int id);
 /* Mengembalikan castle yang dimiliki oleh player nya */

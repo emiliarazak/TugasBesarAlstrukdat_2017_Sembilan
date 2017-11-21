@@ -79,31 +79,79 @@ Map LoadMapFromFile(){
 void PrintMap(){
 /* Mencetak Map secara keseluruhan */
 	int i, j;
-	printf("   ");
+	printf("    ");
 	for(j = OrdMin; j < M.NOrdEff; j++){
-		printf("  %d ", j); /* ordinat/kolom */
+		PrintAngkaOrdinat(j);
 	} printf("\n");
 	for(i = AbsisMin; i < M.NAbsisEff; i++){
-		printf("   ");
+		printf("    ");
 		for(j = OrdMin; j < M.NOrdEff; j++){
 			printf("****"); /* garis atas */
-		} printf("*\n   * ");
+		} printf("*\n    * ");
 		for(j = OrdMin; j < M.NOrdEff; j++){ /* bangunan */
 			printBangunan(getElmt(i, j).bangunan);
 			printf(" * ");
-		} printf("\n %d * ", i); /* absis/baris */
+		} 
+		printf("\n");
+		PrintAngkaAbsis(i); /* absis/baris */
+		printf("* ");
 		for(j = OrdMin; j < M.NOrdEff; j++){ /* unit */
 			printUnit(getElmt(i, j).unit);
 			printf(" * ");
-		} printf("\n   *");
+		} printf("\n    *");
 		for(j = OrdMin; j < M.NOrdEff; j++){ /* space */
 			printf("   *");
 		}
 		printf("\n");
-	}printf("   ");
+	}printf("    ");
 	for(j = OrdMin; j < M.NOrdEff; j++){
 		printf("****"); /* garis terbawah */
 	} printf("*\n");
+}
+
+void PrintAngkaAbsis(int X)
+{
+	//Menampilkan angka yang ada disebelah kiri map
+	if (GetDigit(X)==2)
+	{
+		printf(" %d ", X);
+	}
+	else
+	{
+		printf("  %d ", X);
+	}
+}
+
+void PrintAngkaOrdinat(int Y)
+{
+	//Menampilkan angka diatas Map
+	if (GetDigit(Y)==2)
+	{
+		printf("  %d", Y);
+	}
+	else
+	{
+		printf("   %d", Y);
+	}
+}
+
+int GetDigit(int X)
+{
+	int N=X;
+	int Digit =0;
+	if(N==0)
+	{
+		Digit=1;
+	}
+	else 
+	{
+		while(N>0)
+		{
+			N= N/10;
+			Digit++;
+		}
+	}
+	return Digit;	
 }
 
 void printBangunan(BangunanMap bangunan){

@@ -68,6 +68,15 @@ void InitMap(int X, int Y);
 void PrintMap();
 /* Mencetak Map secara keseluruhan */
 
+void PrintAngkaAbsis(int X);
+	//Menampilkan angka yang ada disebelah kiri map
+
+void PrintAngkaOrdinat(int Y);
+	//Menampilkan angka diatas Map
+
+int GetDigit(int X);
+//Mengembalikan digit dari angka X
+
 void printBangunan(BangunanMap bangunan);
 /* Mencetak bangunan dengan warna tertentu */
 

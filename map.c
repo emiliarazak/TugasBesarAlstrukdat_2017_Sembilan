@@ -198,7 +198,7 @@ boolean IsPosisiTerkiri(POINT P){
 boolean IsPosisiTerkanan(POINT P){
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kanan map */
 /* tapi bukan di ujung map */
-	return (Ordinat(P) == M.NOrdEff && !IsPosisiUjung(P));
+	return (Ordinat(P) == (M.NOrdEff-1) && !IsPosisiUjung(P));
 }
 
 boolean IsPosisiPalingAtas(POINT P){
@@ -210,13 +210,13 @@ boolean IsPosisiPalingAtas(POINT P){
 boolean IsPosisiPalingBawah(POINT P){
 /* Mengembalikan true bila posisi (_, y) ada di paling bawah map */
 /* tapi bukan di ujung map */
-	return (Absis(P) == M.NAbsisEff && !IsPosisiUjung(P));
+	return (Absis(P) == (M.NAbsisEff-1) && !IsPosisiUjung(P));
 }
 
 boolean IsPosisiUjung(POINT P){
 /* Mengembalikan true bila posisi (x, y) ada di ujung map */
-	return ((Absis(P) == AbsisMin || Absis(P) == M.NAbsisEff) && 
-		(Ordinat(P) == OrdMin || Ordinat(P) == M.NOrdEff));
+	return ((Absis(P) == AbsisMin || Absis(P) == (M.NAbsisEff-1)) && 
+		(Ordinat(P) == OrdMin || Ordinat(P) == (M.NOrdEff-1)));
 }
 
 boolean IsKingInTower(int playerId){
@@ -228,7 +228,7 @@ boolean IsKingInTower(int playerId){
 
 boolean IsCastleEmpty(int x, int y){
 /* Memeriksa apakah castle tersebut kosong */
-	return (getUnitId(x, y) == 0);
+	return (getUnitId(x, y) == 0) && (getBangunanId(x, y) == 2);
 }
 
 POINT * getCastle(int id){

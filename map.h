@@ -44,6 +44,7 @@ typedef struct {
 
 extern Map M;
 
+/*** Selektor ***/
 ElType getElmt(int x, int y);
 /* Mengembalikan element dari di petak x dan y */
 
@@ -59,6 +60,8 @@ int getUnitId(int x, int y);
 int getUnitOwner(int x, int y);
 /* Mengembalikan pemilik unit di petak x dan y */
 
+
+/*** Untuk tampilan map ***/
 void MakeEmptyMap(int X, int Y);
 /* Membuat petak normal sebanyak X * Y */
 
@@ -73,9 +76,6 @@ void PrintAngkaAbsis(int X);
 
 void PrintAngkaOrdinat(int Y);
 /* Menampilkan angka diatas Map */
-
-int GetDigit(int X);
-/* Mengembalikan digit dari angka X */
 
 void printBangunan(BangunanMap bangunan);
 /* Mencetak bangunan dengan warna tertentu */
@@ -96,6 +96,25 @@ void UpdateBangunanMap(POINT P, int newId, int pemilik);
 /* newId adalah id bangunan yang baru */
 /* isi dari newId: (1) Tower, (2) Castel, (3) Village, (0) blank */
 /* Mengubah posisi dari bangunan yang ada di map */
+
+void setBangunanKerajaan(int cX, int cY, int playerId);
+/* Membuat bangunan kerajaan milik player dengan id playerId */
+/* cX adalah absis tower dan cY adalah ordinat tower */
+
+void setVillage(int numVillage);
+/* I.S: ukuran peta sudah diinisialisasi */
+/* Meletakkan village tanpa pemilik secara random 
+   tanpa mengganggu letak kerajaan */
+
+POINT getRandomPoint();
+/* mencari point yang masih kosong secara random */
+
+char getId(int tipe, int id);
+/* Mengembalikan tanda untuk bangunan atau unit */
+
+int getDigit(int X);
+/* Mengembalikan digit dari angka X */
+
 
 /*** Untuk keperluan move ***/
 boolean IsPosisiTerkiri(POINT P);
@@ -123,25 +142,13 @@ boolean IsKingInTower(int playerId);
 boolean IsCastleEmpty(int x, int y);
 /* Memeriksa apakah castle tersebut kosong */
 
+boolean IsNoUnit(int x, int y);
+/* Mengembalikan true bila dalam x dan y tidak ada unit */	
+
 POINT * getCastle(int id);
 /* Mengembalikan castle yang dimiliki oleh player nya */
 
-char getId(int tipe, int id);
-/* Mengembalikan tanda untuk bangunan atau unit */
-
-void setBangunanKerajaan(int cX, int cY, int playerId);
-/* Membuat bangunan kerajaan milik player dengan id playerId */
-/* cX adalah absis tower dan cY adalah ordinat tower */
-
-void setVillage(int numVillage);
-/* I.S: ukuran peta sudah diinisialisasi */
-/* Meletakkan village tanpa pemilik secara random 
-   tanpa mengganggu letak kerajaan */
-
-POINT getRandomPoint();
-/* mencari point yang masih kosong secara random */
-
-boolean IsNoUnit(int x, int y);
-/* Mengembalikan true bila dalam x dan y tidak ada unit */	
+POINT getKingPoint(int playerId);
+/* Mengembalikan point <x,y> dimana King milik playerId berada */
 
 #endif

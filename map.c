@@ -157,6 +157,11 @@ void UpdateUnitMap(POINT P, int newId, int pemilik){
 	(M).Mem[Absis(P)][Ordinat(P)].unit.pemilik = pemilik;
 }
 
+void UpdateGiliranUnitMap(POINT P, boolean giliran){
+/* Mengganti giliran dari unit pada point P */
+	(M).Mem[Absis(P)][Ordinat(P)].unit.giliran = giliran;
+}
+
 void UpdateBangunanMap(POINT P, int newId, int pemilik){
 /* I.S: map sudah diinisialisasi */
 /* x dan y adalah posisi absis dan ordinat yang baru */
@@ -325,4 +330,17 @@ POINT getKingPoint(int playerId){
 		}
 	}
 	return P;
+}
+
+POINT getTowerPoint(int playerId){
+/* Mengembalikan point <x,y> dimana tower milik playerId berada */
+	int cX, cY; 
+	if(playerId == 1){
+		cX = M.NAbsisEff - 2;
+		cY = OrdMin + 1;
+	}else{
+		cX = AbsisMin + 1;
+		cY = M.NOrdEff - 2;
+	}
+	return MakePOINT(cX, cY);
 }

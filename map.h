@@ -151,4 +151,7 @@ POINT * getCastle(int id);
 POINT getKingPoint(int playerId);
 /* Mengembalikan point <x,y> dimana King milik playerId berada */
 
+POINT getTowerPoint(int playerId);
+/* Mengembalikan point <x,y> dimana tower milik playerId berada */
+
 #endif

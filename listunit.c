@@ -24,7 +24,7 @@ void CreateEmptyU (ListU *L)
 /* Algoritma */
     FirstU(*L) = Nil;
     LastU(*L) = Nil;
-} 
+}
 
 /****************** Manajemen Memori ******************/
 addressU AlokasiU (infotypeU X)
@@ -84,7 +84,7 @@ void InsVLastU (ListU *L, infotypeU X)
     P = AlokasiU(X);
     if (P!=Nil){
         InsertLastU(L,P);
-    }    
+    }
 }
 
 /*** PENGHAPUSAN ELEMEN ***/
@@ -95,12 +95,12 @@ void DelVFirstU (ListU *L, infotypeU *X)
 {
 /* Kamus */
     addressU P ;
-/* Algoritma */ 
+/* Algoritma */
     DelFirstU(L,&P);
-    if (P!=Nil){        
+    if (P!=Nil){
         *X = InfoU(P);
         DealokasiU(P);
-    }   
+    }
 }
 
 void DelVLastU (ListU *L, infotypeU *X)
@@ -110,11 +110,11 @@ void DelVLastU (ListU *L, infotypeU *X)
 {
 /* Kamus */
     addressU P;
-/* Algoritma */ 
+/* Algoritma */
     if (NextU(FirstU(*L))==Nil){
         *X = InfoU(FirstU(*L));
         CreateEmptyU(L);
-    }   
+    }
     else {
         DelLastU(L,&P);
         if (P!=Nil){
@@ -155,7 +155,7 @@ void InsertLastU (ListU *L, addressU P)
     }
     else {
         NextU(P) = NextU(LastU(*L));
-        PrevU(P) = LastU(*L); 
+        PrevU(P) = LastU(*L);
         NextU(LastU(*L)) = P ;
         LastU(*L) = P ;
     }
@@ -175,7 +175,7 @@ void InsertAfterU (ListU *L, addressU P, addressU Prec)
     }
     if (i != Nil){
         PrevU(P) = Prec ;
-        NextU(P) = i; 
+        NextU(P) = i;
         NextU(Prec) = P ;
         PrevU(i) = P;
     }
@@ -198,7 +198,7 @@ void InsertBeforeU (ListU *L, addressU P, addressU Succ)
     }
     if (i!=Nil){
         PrevU(P) = i ;
-        NextU(P) = Succ; 
+        NextU(P) = Succ;
         PrevU(Succ) = P ;
         NextU(i) = P;
     }
@@ -307,7 +307,7 @@ void PrintListU (ListU L)
         i = 1;
         while (P!=Nil){
             U = InfoU(P);
-            T = GetLocation(U); 
+            T = GetLocation(U);
             printf("%d. ", i);
             if (U.id == 1) {
                 printf("King (%d,%d) | Health %d\n", T.X, T.Y, U.health);

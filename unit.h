@@ -36,19 +36,19 @@ typedef struct {
 
 
 /*Create Unit*/
-/*Create King, Inisialisasi semua attribute dengan attribute 
+/*Create King, Inisialisasi semua attribute dengan attribute
 yang dimiliki King*/
 void CreateKing(Unit *k);
 
-/*Create Archer, Inisialisasi semua attribute dengan attribute 
+/*Create Archer, Inisialisasi semua attribute dengan attribute
 yang dimiliki Archer*/
 void CreateArcher(Unit *a);
 
-/*Create Swordsman, Inisialisasi semua attribute dengan attribute 
+/*Create Swordsman, Inisialisasi semua attribute dengan attribute
 yang dimiliki Swordsman*/
 void CreateSwordsman(Unit *s);
 
-/*Create WhiteMage, Inisialisasi semua attribute dengan attribute 
+/*Create WhiteMage, Inisialisasi semua attribute dengan attribute
 yang dimiliki WhiteMage*/
 void CreateWhiteMage(Unit *w);
 

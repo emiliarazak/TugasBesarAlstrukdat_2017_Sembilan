@@ -4,7 +4,7 @@
 void printBool(boolean b);
 
 int main(){
-	int N,M;
+	int N, M, X, Y;
 	POINT P;
 	do{
 		printf("Masukan Ukuran Peta(X,Y): ");

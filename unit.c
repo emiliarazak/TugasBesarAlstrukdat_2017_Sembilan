@@ -5,12 +5,13 @@
 #include "boolean.h"
 #include "point.h"
 #include "unit.h"
+#include "player.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 
 /*Create Unit*/
-/*Create King, Inisialisasi semua attribute dengan attribute 
+/*Create King, Inisialisasi semua attribute dengan attribute
 yang dimiliki King*/
 void CreateKing(Unit *k) {
 	Unit K;
@@ -34,7 +35,7 @@ void CreateKing(Unit *k) {
 	*k=K;
 }
 
-/*Create Archer, Inisialisasi semua attribute dengan attribute 
+/*Create Archer, Inisialisasi semua attribute dengan attribute
 yang dimiliki Archer*/
 void CreateArcher(Unit *a) {
 	Unit A;
@@ -58,7 +59,7 @@ void CreateArcher(Unit *a) {
 	*a=A;
 }
 
-/*Create Swordsman, Inisialisasi semua attribute dengan attribute 
+/*Create Swordsman, Inisialisasi semua attribute dengan attribute
 yang dimiliki Swordsman*/
 void CreateSwordsman(Unit *s) {
 	Unit S;
@@ -82,7 +83,7 @@ void CreateSwordsman(Unit *s) {
 	*s=S;
 }
 
-/*Create WhiteMage, Inisialisasi semua attribute dengan attribute 
+/*Create WhiteMage, Inisialisasi semua attribute dengan attribute
 yang dimiliki WhiteMage*/
 void CreateWhiteMage(Unit *w) {
 	Unit W;
@@ -179,7 +180,7 @@ void Attack(Unit X, Unit *Y) {
 		printf("r: %d\n", r);
 		printf("chance: %d\n", chance);
 	}
-	
+
 }
 
 /*Unit X melakukan retaliation terhadap unit Y*/
@@ -215,7 +216,7 @@ void Retaliate(Unit X, Unit *Y) {
 				printf("chance: %d\n", chance);
 			}
 		}
-		
+
 	}
 }
 
@@ -261,6 +262,4 @@ void PrintUnit(Unit X) {
 	else{
 		printf("No");
 	}
-
-
 }

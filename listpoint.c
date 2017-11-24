@@ -75,7 +75,7 @@ addressP SearchP (ListP L, infotypeP X)
         found = false;
         P = FirstP(L);
         while((P!=Nil)&&!found){
-            if ((InfoP(P).X == X.X)&&(InfoP(P).Y == X.Y)) { 
+            if ((InfoP(P).X == X.X)&&(InfoP(P).Y == X.Y)) {
                 found = true;
             }
             else {
@@ -131,12 +131,12 @@ void DelVFirstPP (ListP *L, infotypeP *X)
 {
 /* Kamus */
     addressP P ;
-/* Algoritma */ 
+/* Algoritma */
     DelFirstP(L,&P);
-    if (P!=Nil){        
+    if (P!=Nil){
         *X = InfoP(P);
         DealokasiP(P);
-    }   
+    }
 }
 
 void DelVLastP (ListP *L, infotypeP *X)
@@ -146,11 +146,11 @@ void DelVLastP (ListP *L, infotypeP *X)
 {
 /* Kamus */
     addressP P;
-/* Algoritma */ 
+/* Algoritma */
     if (NextP(FirstP(*L))==Nil){
         *X = InfoP(FirstP(*L));
         CreateEmptyP(L);
-    }   
+    }
     else {
         DelLastP(L,&P);
         if (P!=Nil){
@@ -191,7 +191,7 @@ void InsertLastP (ListP *L, addressP P)
     }
     else {
         NextP(P) = NextP(LastP(*L));
-        PrevP(P) = LastP(*L); 
+        PrevP(P) = LastP(*L);
         NextP(LastP(*L)) = P ;
         LastP(*L) = P ;
     }
@@ -211,7 +211,7 @@ void InsertAfterP (ListP *L, addressP P, addressP Prec)
     }
     if (i != Nil){
         PrevP(P) = Prec ;
-        NextP(P) = i; 
+        NextP(P) = i;
         NextP(Prec) = P ;
         PrevP(i) = P;
     }
@@ -234,7 +234,7 @@ void InsertBeforeP (ListP *L, addressP P, addressP Succ)
     }
     if (i!=Nil){
         PrevP(P) = i ;
-        NextP(P) = Succ; 
+        NextP(P) = Succ;
         PrevP(Succ) = P ;
         NextP(i) = P;
     }
@@ -342,7 +342,7 @@ void PrintListP (ListP L)
         i = 1;
         while (P!=Nil){
             Prop = InfoP(P);
-            //L = GetLocation(U); 
+            //L = GetLocation(U);
             printf("%d. ", i);
             /*
             if (U.id == 1) {
@@ -368,5 +368,5 @@ void PrintListP (ListP L)
             P = NextP(P);
             i++;
         }
-    }	
+    }
 }

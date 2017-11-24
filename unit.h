@@ -10,7 +10,7 @@
 
 /*Definisi Tipe Data*/
 typedef struct {
-	 int id;
+	int id;
 	/*	id==1: King
 		id==2: Archer
 		id==3: Swordsman
@@ -21,17 +21,17 @@ typedef struct {
 	int attack;
 	/*selain white mage bernilai 0*/
 	int heal;
-	 int max_mov_points;
+	int max_mov_points;
 	int mov_points;
-	 int atk_type;
+	int atk_type;
 	/* 	atk_type==1 : melee
 		atk_type==2	: ranged*/
 	boolean atk_chance;
 	POINT location;
 	/*Untuk implementasi probabilitas serangan, evasion=kemungkinan menghindar*/
-	 float evasion;
-	 int recruitment_price;
-	 int upkeep_price;
+	float evasion;
+	int recruitment_price;
+	int upkeep_price;
 } Unit;
 
 

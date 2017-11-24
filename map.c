@@ -48,6 +48,7 @@ void MakeEmptyMap(int X, int Y){
 		for(j = OrdMin; j < M.NOrdEff; j++){
 			UpdateBangunanMap(MakePOINT(i, j), 0, 0);
 			UpdateUnitMap(MakePOINT(i, j), 0, 0);
+			UpdateGiliranUnitMap(MakePOINT(i, j), false);
 		}
 	}
 }

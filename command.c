@@ -18,8 +18,15 @@ Player P,P1,P2;
 void StartGame()
 {
     int X,Y;
-    printf("Enter the size of the map : ");
-    scanf("%d %d",&X,&Y);
+    do{
+		printf("Enter the size of map (X Y): ");
+		scanf("%d",&X);
+		scanf("%d",&Y);
+		if ((Y<8)||(X<8)||(Y>100)||(X>100)){
+			printf("The minimum size is 8x8 and the maximum is 100x100\n");
+		}
+	}while((Y<8)||(X<8)||(Y>100)||(X>100));
+    
     InitMap(X,Y);
     CreatePlayer(&P1,1);
     CreatePlayer(&P2,2);
@@ -33,6 +40,7 @@ void StartGame()
 void openingturn ()
 {
     printf("\n\n");
+    UpdateGiliranUnitMap(CurrentUnit(P).location, true);
     printf("Player %d's Turn\n",Id(P));
     PrintAttribute (P);
     PrintUnit(CurrentUnit(P));
@@ -143,7 +151,7 @@ void readcommand()
     while (!IsKataSama (CKata,ComExit))
     {
         execute();
-        openingturn ();
+        openingturn();
         scanf("%s",command);
         pita=fopen("pitakar.txt","w");
         fprintf(pita,"%s.",command);

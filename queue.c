@@ -125,7 +125,9 @@ void EndTurn (Player P)
 /* Prosedur ini untuk melakukan pergantian giliran antar pemain */
 {
     Player CurrP = P;
+    
     DelQ(&QTurn,&P);
+    UpdateGiliranUnitMap(CurrentUnit(CurrP).location, false);
     UpdatePlayer(CurrP);
     if (CurrP.id == 1){
         AddQ(&QTurn,P1);

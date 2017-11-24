@@ -8,13 +8,13 @@
 typedef struct
 {
     int id;
-int gold;
+	int gold;
     ListU units;
     ListP villages;
     ListP castle;
     POINT tower;
-int income;
-int upKeep;
+	int income;
+	int upKeep;
     Unit current_unit;
 } Player;
 

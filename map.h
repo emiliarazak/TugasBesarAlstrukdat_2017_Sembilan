@@ -97,6 +97,9 @@ void UpdateBangunanMap(POINT P, int newId, int pemilik);
 /* isi dari newId: (1) Tower, (2) Castel, (3) Village, (0) blank */
 /* Mengubah posisi dari bangunan yang ada di map */
 
+void UpdateGiliranUnitMap(POINT P, boolean giliran);
+/* Mengganti giliran dari unit pada point P */
+
 void setBangunanKerajaan(int cX, int cY, int playerId);
 /* Membuat bangunan kerajaan milik player dengan id playerId */
 /* cX adalah absis tower dan cY adalah ordinat tower */

@@ -138,7 +138,7 @@ void printUnit(UnitMap unit){
 	char b;
 	b = getId(2, unit.id);
 	if(unit.giliran){
-		print_green(b);
+		print_yellow(b);
 	}else{
 		switch(unit.pemilik){
 			case 1: print_blue(b); break;
@@ -252,31 +252,25 @@ int getDigit(int X){
 boolean IsPosisiTerkiri(POINT P){
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kiri map */
 /* tapi bukan di ujung map */
-	return (Ordinat(P) == OrdMin && !IsPosisiUjung(P));
+	return (Ordinat(P) == OrdMin);
 }
 
 boolean IsPosisiTerkanan(POINT P){
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kanan map */
 /* tapi bukan di ujung map */
-	return (Ordinat(P) == (M.NOrdEff-1) && !IsPosisiUjung(P));
+	return (Ordinat(P) == (M.NOrdEff-1));
 }
 
 boolean IsPosisiPalingAtas(POINT P){
 /* Mengembalikan true bila posisi (_, y) ada di paling atas map */
 /* tapi bukan di ujung map */
-	return (Absis(P) == AbsisMin && !IsPosisiUjung(P));
+	return (Absis(P) == AbsisMin);
 }
 
 boolean IsPosisiPalingBawah(POINT P){
 /* Mengembalikan true bila posisi (_, y) ada di paling bawah map */
 /* tapi bukan di ujung map */
-	return (Absis(P) == (M.NAbsisEff-1) && !IsPosisiUjung(P));
-}
-
-boolean IsPosisiUjung(POINT P){
-/* Mengembalikan true bila posisi (x, y) ada di ujung map */
-	return ((Absis(P) == AbsisMin || Absis(P) == (M.NAbsisEff-1)) && 
-		(Ordinat(P) == OrdMin || Ordinat(P) == (M.NOrdEff-1)));
+	return (Absis(P) == (M.NAbsisEff-1);
 }
 
 boolean IsKingInTower(int playerId){
@@ -301,20 +295,9 @@ boolean IsNoUnit(int x, int y){
 	return (getUnitId(x, y) == 0);
 }
 
-POINT * getCastle(int id){
-/* Mengembalikan castle yang dimiliki oleh player dengan id tertentu */
-/* untuk next update.. */
-	POINT * castle;
-	int i, j, k;
-	k = 0;
-	for(i = AbsisMin; i < M.NAbsisEff ; i++){
-		for(j = OrdMin; j < M.NOrdEff; j++){
-			if(getBangunanId(i, j) == 2 && getBangunanOwner(i, j) == id){
-				castle[k] = MakePOINT(i, j);
-			}
-		}
-	}
-	return castle;
+boolean IsPointInMap(int x, int y){
+/* Mengembalikan true jika (x,y) terdapat di map */	
+	return (x >= AbsisMin && x < M.NAbsisEff) && (y >= OrdMin  && y < M.NOrdEff);
 }
 
 POINT getKingPoint(int playerId){

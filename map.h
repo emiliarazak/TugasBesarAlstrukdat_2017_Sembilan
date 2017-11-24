@@ -136,9 +136,6 @@ boolean IsPosisiPalingBawah(POINT P);
 /* Mengembalikan true bila posisi (_, y) ada di paling bawah map */
 /* tapi bukan di ujung map */
 
-boolean IsPosisiUjung(POINT P);
-/* Mengembalikan true bila posisi (x, y) ada di ujung map */
-
 boolean IsKingInTower(int playerId);
 /* Mengembalikan true jika King berada di tower miliknya */
 
@@ -146,10 +143,10 @@ boolean IsCastleEmpty(int x, int y);
 /* Memeriksa apakah castle tersebut kosong */
 
 boolean IsNoUnit(int x, int y);
-/* Mengembalikan true bila dalam x dan y tidak ada unit */	
-
-POINT * getCastle(int id);
-/* Mengembalikan castle yang dimiliki oleh player nya */
+/* Mengembalikan true bila dalam x dan y tidak ada unit */
+	
+boolean IsPointInMap(int x, int y);
+/* Mengembalikan true jika (x,y) terdapat di map */
 
 POINT getKingPoint(int playerId);
 /* Mengembalikan point <x,y> dimana King milik playerId berada */

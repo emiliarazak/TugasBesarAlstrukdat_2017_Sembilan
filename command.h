@@ -29,4 +29,10 @@ void startcommand();
 
 void readcommand();
 
+void AttackAndRetaliate(Player *P1, Player *P2);
+
+void PrintListEnemy (ListU L, int *choice);
+
+int winningcheck();
+
 #endif

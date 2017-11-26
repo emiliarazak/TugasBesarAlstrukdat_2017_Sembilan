@@ -6,6 +6,7 @@
 #include "point.h"
 #include "unit.h"
 #include "player.h"
+#include "map.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -165,20 +166,46 @@ void MoveUnit(Unit *X, POINT final_coordinate) {
 /*Unit X melakukan serangan terhadap unit Y*/
 /*Implementasi probabilitas*/
 /*Prekondisi: Adjacent*/
-void Attack(Unit X, Unit *Y) {
-	if(CanAttack(X)){
+void Attack(Unit *X, Unit *Y) {
+	if(CanAttack(*X)){
 		int r;
 		srand(time(NULL));
 		/* random int between 1 and 10 */
-		r=rand()%10+1;
-		int chance=(*Y).evasion*10;
-		chance=10-chance;
+		r = rand()%10+1;
+		int chance = (*Y).evasion*10;
+		chance = 10-chance;
 		if(r<=chance){
-			(*Y).health-=X.attack;
+			(*Y).health -= (*X).attack;
+			if((*X).id==1){
+				printf("King has dealt %d damage!\n", (*X).attack);
+			}
+			else if((*X).id==2){
+				printf("Archer has dealt %d damage!\n", (*X).attack);
+			}
+			else if((*X).id==3){
+				printf("Swordsman has dealt %d damage!\n", (*X).attack);
+			}
+			else if((*X).id==4){
+				printf("White Mage has dealt %d damage!\n", (*X).attack);
+			}
 		}
-		X.atk_chance=false;
-		printf("r: %d\n", r);
-		printf("chance: %d\n", chance);
+		else{
+			if((*X).id==1){
+				printf("King's attack missed!\n");
+			}
+			else if((*X).id==2){
+				printf("Archer's attack missed!\n");
+			}
+			else if((*X).id==3){
+				printf("Swordman's attack missed!\n");
+			}
+			else if((*X).id==4){
+				printf("White Mage's attack missed!\n");
+			}
+		}
+		(*X).atk_chance = false;
+		//printf("r: %d\n", r);
+		//printf("chance: %d\n", chance);
 	}
 
 }
@@ -188,32 +215,56 @@ void Attack(Unit X, Unit *Y) {
 /*Prekondisi: Adjacent*/
 void Retaliate(Unit X, Unit *Y) {
 	if(!IsDead(X)){
-		if((X).id==1){
+		if((X).id == 1){
 			int r;
 			srand(time(NULL));
 			/* random int between 1 and 10 */
-			r=rand()%10+1;
-			int chance=(*Y).evasion*10;
-			chance=10-chance;
-			if(r<=chance){
-				(*Y).health-=X.attack;
+			r = rand()%10+1;
+			int chance = (*Y).evasion*10;
+			chance = 10-chance;
+			if(r <= chance){
+				(*Y).health -= X.attack;
+				printf("King returns %d damage!\n", X.attack);
 			}
-			printf("r: %d\n", r);
-			printf("chance: %d\n", chance);
+			else{
+				printf("King's retaliation missed!\n");
+			}
+			//printf("r: %d\n", r);
+			//printf("chance: %d\n", chance);
 		}
 		else{
-			if((X).atk_type==(*Y).atk_type){
+			if((X).atk_type == (*Y).atk_type){
 				int r;
 				srand(time(NULL));
 				/* random int between 1 and 10 */
-				r=rand()%10+1;
-				int chance=(*Y).evasion*10;
-				chance=10-chance;
-				if(r<=chance){
-					(*Y).health-=X.attack;
+				r = rand()%10+1;
+				int chance = (*Y).evasion*10;
+				chance = 10-chance;
+				if(r <= chance){
+					(*Y).health -= X.attack;
+					if(X.id==2){
+						printf("Archer returns %d damage!\n", X.attack);
+					}
+					else if(X.id==3){
+						printf("Swordsman returns %d damage!\n", X.attack);
+					}
+					else if(X.id==4){
+						printf("White Mage returns %d damage!\n", X.attack);
+					}
 				}
-				printf("r: %d\n", r);
-				printf("chance: %d\n", chance);
+				else{
+					if(X.id==2){
+						printf("Archer's retaliation missed!\n");
+					}
+					else if(X.id==3){
+						printf("Swordsman's retaliation missed!\n");
+					}
+					else if(X.id==4){
+						printf("White Mage's retaliation missed!\n");
+					}
+				}
+				//printf("r: %d\n", r);
+				//printf("chance: %d\n", chance);
 			}
 		}
 

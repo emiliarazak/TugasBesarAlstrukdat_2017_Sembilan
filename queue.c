@@ -121,13 +121,28 @@ Player CurrentTurn ()
     }
 }
 
-void EndTurn (Player P)
+Player Enemy ()
+/* Prosedur ini untuk mengembalikan player mana yang saat ini mendapat giliran bermain */
+{
+/* Kamus */
+/* Algoritma */
+    if (MaxEl(QTurn)!=0){
+        return (InfoTail(QTurn));
+    }
+}
+
+void EndTurn (Player *P)
 /* Prosedur ini untuk melakukan pergantian giliran antar pemain */
 {
-    Player CurrP = P;
-    
-    DelQ(&QTurn,&P);
-    UpdateGiliranUnitMap(CurrentUnit(CurrP).location, false);
+    Player CurrP = *P;
+    DelQ(&QTurn,P);
+    addressU U = FirstU(Units(CurrP));
+    while (U!=Nil){
+        InfoU(U).mov_points = InfoU(U).max_mov_points;
+        InfoU(U).atk_chance = true; 
+        U = NextU(U);
+    }
+    UpdateGiliranUnitMap(CurrentUnit(CurrP).location,false);
     UpdatePlayer(CurrP);
     if (CurrP.id == 1){
         AddQ(&QTurn,P1);

@@ -122,15 +122,19 @@ int getDigit(int X);
 /*** Untuk keperluan move ***/
 boolean IsPosisiTerkiri(POINT P);
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kiri map */
+/* tapi bukan di ujung map */
 
 boolean IsPosisiTerkanan(POINT P);
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kanan map */
+/* tapi bukan di ujung map */
 
 boolean IsPosisiPalingAtas(POINT P);
 /* Mengembalikan true bila posisi (_, y) ada di paling atas map */
+/* tapi bukan di ujung map */
 
 boolean IsPosisiPalingBawah(POINT P);
 /* Mengembalikan true bila posisi (_, y) ada di paling bawah map */
+/* tapi bukan di ujung map */
 
 boolean IsKingInTower(int playerId);
 /* Mengembalikan true jika King berada di tower miliknya */
@@ -139,8 +143,7 @@ boolean IsCastleEmpty(int x, int y);
 /* Memeriksa apakah castle tersebut kosong */
 
 boolean IsNoUnit(int x, int y);
-/* Mengembalikan true bila dalam x dan y tidak ada unit */
-	
+/* Mengembalikan true bila dalam x dan y tidak ada unit */	
 boolean IsPointInMap(int x, int y);
 /* Mengembalikan true jika (x,y) terdapat di map */
 

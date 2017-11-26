@@ -72,7 +72,9 @@ void CreateTurn(Queue *QTurn, Player P1, Player P2);
 /* Membuat sebuah giliran antara 2 pemain */
 Player CurrentTurn();
 /* Mengembalikan player mana yang saat ini mendapat giliran bermain */
-void EndTurn();
+Player Enemy(); 
+/* Mengembalikan player enemy */
+void EndTurn(Player *P);
 /* Melakukan pergantian giliran antar pemain */
 
 

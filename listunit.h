@@ -137,4 +137,6 @@ void PrintListU (ListU L);
 /* I.S. : L sembarang */
 /* F.S : Tercetak list of unit */
 
+//void PrintListEnemy (ListU L, int *choice);
+
 #endif

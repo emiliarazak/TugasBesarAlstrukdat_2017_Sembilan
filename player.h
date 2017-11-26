@@ -1,6 +1,7 @@
 #ifndef player_H
 #define player_H
 #include "boolean.h"
+#include "unit.h"
 #include "listunit.h"
 #include "listpoint.h"
 #include "map.h"
@@ -50,8 +51,13 @@ void Undo(Player *P);
 /* Melakukan undo terhadap posisi current unit */
 void InfoMap();
 /* Menampilkan info yang ada pada sebuah petak */
-void AkuisisiVillage(Player P, POINT Loc);
+void AkuisisiVillage(Player *P, POINT Loc);
 /* Mengakuisisi village */
 void UpdatePlayer(Player CurrP);
 /* Mengupdate seluruh informasi Current Player ke Player */
+//void AttackAndRetaliate(Player *P1, Player *P2);
+
+void TerminateDeadUnit (Player *P);
+
+void RecoverGoldMove (Player *P);
 #endif

@@ -4,6 +4,7 @@
 
 #include "listunit.h"
 #include "point.h"
+#include "unit.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -166,8 +167,8 @@ void InsertAfterU (ListU *L, addressU P, addressU Prec)
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec */
 {
 /* Kamus */
-    addressU i ;
-/* Algoritma */
+   /* addressU i ;
+/* Algoritma 
     //Mencari Prec dan i = NextU(Prec)
     i = FirstU(*L);
     while (PrevU(i) != Prec) {
@@ -181,7 +182,18 @@ void InsertAfterU (ListU *L, addressU P, addressU Prec)
     }
     else{
         InsertLastU(L,P);
+    }*/
+
+    if(NextU(Prec)!=Nil){
+        PrevU(NextU(Prec))=P;
     }
+    else{
+        LastU(*L)=P;
+    }
+    
+    NextU(P)=NextU(Prec);
+    PrevU(P)=Prec;
+    NextU(Prec)=P;
 }
 
 void InsertBeforeU (ListU *L, addressU P, addressU Succ)
@@ -310,19 +322,19 @@ void PrintListU (ListU L)
             T = GetLocation(U);
             printf("%d. ", i);
             if (U.id == 1) {
-                printf("King (%d,%d) | Health %d\n", T.X, T.Y, U.health);
+                printf("King (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
             }
             else {
                 if (U.id ==2 ){
-                    printf("Archer (%d,%d) | Health %d\n", T.X, T.Y, U.health);
+                    printf("Archer (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
                 }
                 else {
                     if (U.id ==3){
-                        printf("Swordsman (%d,%d) | Health %d\n", T.X, T.Y, U.health);
+                        printf("Swordsman (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
                     }
                     else {
                         if (U.id == 4){
-                            printf("White Mage (%d,%d) | Health %d\n", T.X, T.Y, U.health);
+                            printf("White Mage (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
                         }
                     }
                 }
@@ -331,4 +343,4 @@ void PrintListU (ListU L)
             i++;
         }
     }
-}
+} 

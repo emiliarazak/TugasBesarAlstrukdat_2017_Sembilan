@@ -251,25 +251,21 @@ int getDigit(int X){
 /*** Untuk keperluan move ***/
 boolean IsPosisiTerkiri(POINT P){
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kiri map */
-/* tapi bukan di ujung map */
 	return (Ordinat(P) == OrdMin);
 }
 
 boolean IsPosisiTerkanan(POINT P){
 /* Mengembalikan true bila posisi (x, _) ada di pinggir kanan map */
-/* tapi bukan di ujung map */
 	return (Ordinat(P) == (M.NOrdEff-1));
 }
 
 boolean IsPosisiPalingAtas(POINT P){
 /* Mengembalikan true bila posisi (_, y) ada di paling atas map */
-/* tapi bukan di ujung map */
 	return (Absis(P) == AbsisMin);
 }
 
 boolean IsPosisiPalingBawah(POINT P){
 /* Mengembalikan true bila posisi (_, y) ada di paling bawah map */
-/* tapi bukan di ujung map */
 	return (Absis(P) == (M.NAbsisEff-1));
 }
 

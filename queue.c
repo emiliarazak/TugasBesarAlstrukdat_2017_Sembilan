@@ -134,22 +134,30 @@ Player Enemy ()
 void EndTurn (Player *P)
 /* Prosedur ini untuk melakukan pergantian giliran antar pemain */
 {
-    Player CurrP = *P;
-    DelQ(&QTurn,P);
-    addressU U = FirstU(Units(CurrP));
+    Player temp;
+    DelQ(&QTurn,&temp);
+    addressU U = FirstU(Units(*P));
     while (U!=Nil){
         InfoU(U).mov_points = InfoU(U).max_mov_points;
         InfoU(U).atk_chance = true; 
         U = NextU(U);
     }
-    UpdateGiliranUnitMap(CurrentUnit(CurrP).location,false);
-    UpdatePlayer(CurrP);
-    if (CurrP.id == 1){
-        AddQ(&QTurn,P1);
-    }
-    else{
-        if (CurrP.id == 2){
-            AddQ(&QTurn,P2);
-        }
-    }
+    UpdateGiliranUnitMap(CurrentUnit(*P).location,false);
+    //UpdatePlayer(CurrP);
+            AddQ(&QTurn,temp);
+
+           /* printf("P1 List Units:\n");
+            addressU Pu;
+            Pu=FirstU(Units(P1));
+            while(Pu!=Nil){
+                PrintUnit(InfoU(Pu));printf("\n");
+                Pu=NextU(Pu);
+            }
+
+            printf("P2 List Units:\n");
+            Pu=FirstU(Units(P2));
+            while(Pu!=Nil){
+                PrintUnit(InfoU(Pu));printf("\n");
+                Pu=NextU(Pu);
+}            }*/
 }

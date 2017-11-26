@@ -14,7 +14,7 @@ Kata ComInfo;
 Kata ComEnd_Turn;
 Kata ComSave;
 Kata ComExit;
-Player P,P1,P2;
+Kata CommNextUnit;
 boolean end =false;
 
 Stack S ;
@@ -35,7 +35,6 @@ void StartGame()
     CreatePlayer(&P1,1);
     CreatePlayer(&P2,2);
     CreateTurn (&QTurn,P1,P2);
-    P=CurrentTurn(QTurn);
     initialkata();
     openingturn();
     readcommand();
@@ -43,30 +42,35 @@ void StartGame()
 
 void openingturn ()
 {
-    if(end) CurrentUnit(P).mov_points=CurrentUnit(P).max_mov_points;
+    if(end) 
+    {
+        CurrentUnit(InfoHead(QTurn)).mov_points=CurrentUnit(InfoHead(QTurn)).max_mov_points;
+        CurrentUnit(InfoHead(QTurn)).atk_chance=true;
+    }
     printf("\n\n");
-    UpdateGiliranUnitMap(CurrentUnit(P).location,true);
-    printf("Player %d's Turn\n",Id(P));
-    PrintAttribute (P);
-    PrintUnit(CurrentUnit(P));
+    UpdateGiliranUnitMap(CurrentUnit(InfoHead(QTurn)).location,true);
+    printf("Player %d's Turn\n",Id(InfoHead(QTurn)));
+    PrintAttribute (InfoHead(QTurn));
+    PrintUnit(CurrentUnit(InfoHead(QTurn)));
     printf("\nYour input : ");
 }
 
 void execute ()
 {
+	HealPlayer(&InfoHead(QTurn));
     if(IsKataSama (CKata,ComMove))
     {
         boolean found=false;
         addressU Pt;
-        POINT lokasiawal=CurrentUnit(P).location;
-        Move(&P);
-        Pt= FirstU(Units(P));
+        POINT lokasiawal=CurrentUnit(InfoHead(QTurn)).location;
+        Move(&InfoHead(QTurn));
+        Pt= FirstU(Units(InfoHead(QTurn)));
         while(Pt!=Nil && !found)
         {
             if(EQ(lokasiawal,InfoU(Pt).location))
             {
-                InfoU(Pt).location=CurrentUnit(P).location;
-                InfoU(Pt).mov_points=CurrentUnit(P).mov_points;
+                InfoU(Pt).location=CurrentUnit(InfoHead(QTurn)).location;
+                InfoU(Pt).mov_points=CurrentUnit(InfoHead(QTurn)).mov_points;
                 found=true;
             }
             else Pt=NextU(Pt);
@@ -75,37 +79,39 @@ void execute ()
     }
     else if(IsKataSama (CKata,ComUndo))
     {
-        Undo(&P);
+        Undo(&InfoHead(QTurn));
         end=false;
     }
     else if(IsKataSama (CKata,ComChange_Unit))
     {
     CreateEmpty (&S);
-        ChangeUnit(&P);
+        ChangeUnit(&InfoHead(QTurn));
         end=false;
     }
     else if(IsKataSama (CKata,ComRecruit))
     {
     CreateEmpty (&S);
-        Recruit (&P);
+        Recruit (&InfoHead(QTurn));
         end=false;
     }
     else if(IsKataSama (CKata,ComAttack))
     {
     CreateEmpty (&S);
-    Player E = Enemy();
-    AttackAndRetaliate(&P, &E);
-    UpdatePlayer(P);
-    printf("P1: \n"); PrintUnit(CurrentUnit(P));printf("\n");
-    UpdatePlayer(E);
-    printf("P2: \n"); PrintUnit(CurrentUnit(E));printf("\n");
-    addressU U;
-    U=FirstU(Units(E));
+    AttackAndRetaliate(&InfoHead(QTurn), &InfoTail(QTurn));
+    
+    //printf("P%d dari exec: \n",InfoHead(QTurn).id); PrintUnit(CurrentUnit(InfoHead(QTurn)));printf("\n");
+    
+    //printf("P%d dari exec: \n",InfoTail(QTurn).id); PrintUnit(CurrentUnit(InfoTail(QTurn)));printf("\n");
+    
+    /*addressU U;
+    U=FirstU(Units(P2));
     printf("P2 List after update player:\n");
     while(U!=Nil){
         PrintUnit(InfoU(U));printf("\n");
         U=NextU(U);
-    }
+    } printf("\n");*/
+    
+    end=false;
     }
     else if(IsKataSama (CKata,ComMap))
     {
@@ -119,16 +125,19 @@ void execute ()
     }
     else if(IsKataSama (CKata,ComEnd_Turn))
     {
-    CreateEmpty (&S);
-        RecoverGoldMove(&P);
-        EndTurn (&P);
-        P=CurrentTurn(QTurn);
+        CreateEmpty (&S);
+        RecoverGoldMove(&InfoHead(QTurn));
+        EndTurn (&InfoHead(QTurn));
         end =true;
     }
     else if(IsKataSama (CKata,ComSave))
     {
-    CreateEmpty (&S);
+        CreateEmpty (&S);
         end=false;
+    }
+    else if (IsKataSama(CKata,CommNextUnit)){
+        NextUnit(&InfoHead(QTurn));
+        end = false ;
     }
     else printf("Invalid command\n\n");
 }
@@ -206,6 +215,16 @@ void initialkata()
     ComExit.TabKata[3]='i';
     ComExit.TabKata[4]='t';
     ComExit.Length=4;
+    CommNextUnit.TabKata[1]='N';
+    CommNextUnit.TabKata[2]='e';
+    CommNextUnit.TabKata[3]='x';
+    CommNextUnit.TabKata[4]='t';
+    CommNextUnit.TabKata[5]='_';
+    CommNextUnit.TabKata[6]='U';
+    CommNextUnit.TabKata[7]='n';
+    CommNextUnit.TabKata[8]='i';
+    CommNextUnit.TabKata[9]='t';
+    CommNextUnit.Length=9;
 }
 
 void readcommand()
@@ -220,17 +239,24 @@ void readcommand()
     printf("winningcheck : %d\n", winningcheck() );
     while (!IsKataSama (CKata,ComExit) && (winningcheck()==0)){
         execute();
-        openingturn ();
-        scanf("%s",command);
-        pita=fopen("pitakar.txt","w");
-        fprintf(pita,"%s.",command);
-        fclose(pita);
-        STARTKATA();
+        if (winningcheck()==1) printf("player 1 menang\n");
+        else if (winningcheck()==2) printf("player 2 menang\n");
+        else
+        {
+        	openingturn ();
+	        scanf("%s",command);
+	        pita=fopen("pitakar.txt","w");
+	        fprintf(pita,"%s.",command);
+	        fclose(pita);
+	        STARTKATA();
+        }
     }
+    if(winningcheck()>0) printf("menang\n");
+    if(IsKataSama (CKata,ComExit))  printf("katanya exit\n");
     printf("\n\n=== EXIT ===\n\n");
 }
 
-void AttackAndRetaliate(Player *P1, Player *P2){
+void AttackAndRetaliate(Player *A, Player *B){
     POINT UnitLoc, EnemyLoc;
     int choice;
     int i;
@@ -238,14 +264,14 @@ void AttackAndRetaliate(Player *P1, Player *P2){
     addressU U;
     boolean found;
     /* Algoritma */
-    UnitLoc = CurrentUnit(*P1).location;
-    printf("UnitLoc: (%d,%d)", Absis(UnitLoc), Ordinat(UnitLoc));
+    UnitLoc = CurrentUnit(*A).location;
+    //printf("UnitLoc: (%d,%d)\n", Absis(UnitLoc), Ordinat(UnitLoc));
     CreateEmptyU(&LEnemy);
     printf("step 1\n");
-    U = FirstU(Units(*P2));
+    U = FirstU(Units(*B));
     while (U != Nil){
         EnemyLoc = GetLocation(InfoU(U));
-        printf("EnemyLoc: (%d,%d)", Absis(EnemyLoc), Ordinat(EnemyLoc));
+      //  printf("EnemyLoc: (%d,%d)\n", Absis(EnemyLoc), Ordinat(EnemyLoc));
         if (Absis(EnemyLoc) == Absis(UnitLoc)-1 && Ordinat(EnemyLoc)==Ordinat(UnitLoc)){
             InsVFirstU(&LEnemy,InfoU(U));
         }
@@ -261,10 +287,10 @@ void AttackAndRetaliate(Player *P1, Player *P2){
         U=NextU(U);
     }
     printf("Step 2\n");
-    printf("List Enemies: \n");
-    PrintListU(LEnemy);
+   // printf("List Enemies: \n");
+    //PrintListU(LEnemy);
     /* Menampilkan Seluruh Kemungkinan Musuh yang dapat Diserang */
-    if(CanAttack(CurrentUnit(*P1))){
+    if(CanAttack(CurrentUnit(*A))){
         if(!IsEmptyU(LEnemy)){
             // printf("Please select enemy you want to attack : \n");
             PrintListEnemy(LEnemy, &choice);
@@ -283,44 +309,107 @@ void AttackAndRetaliate(Player *P1, Player *P2){
                 }
             }
             printf("step 4\n");
-            addressU P;
+            addressU Pt;
             addressU Prec;
             found=false;
-            P=FirstU(Units(*P2));
+            Pt=FirstU(Units(*B));
             Prec=Nil;
-            while(P!=Nil && !found){
-                if(Absis(GetLocation(InfoU(P)))==Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(P)))==Ordinat(GetLocation(InfoU(U)))){
+            while(Pt!=Nil && !found){
+                if(Absis(GetLocation(InfoU(Pt)))==Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(Pt)))==Ordinat(GetLocation(InfoU(U)))){
                     found=true;
                 }
                 else{
-                    Prec=P;
-                    P=NextU(P);
+                    Prec=Pt;
+                    Pt=NextU(Pt);
                 }
             }
-            printf("step 5\n");
-            Attack(&CurrentUnit(*P1), &InfoU(U));
+            addressU Pu;
+            addressU PrecU;
+            found=false;
+            PrecU=Nil;
+            Pu=FirstU(Units(*A));
+            while(Pu!=Nil && !found){
+                if(Absis(GetLocation(InfoU(Pu)))==Absis(GetLocation(CurrentUnit(*A))) && Ordinat(GetLocation(InfoU(Pu)))==Ordinat(GetLocation(CurrentUnit(*A)))){
+                    found=true;
+                }
+                else{
+                    PrecU=Pu;
+                    Pu=NextU(Pu);
+                }
+            
+            }
+         printf("step 5\n");
+            Attack(&CurrentUnit(*A), &InfoU(U));
             printf("step 6\n");
             if(IsDead(InfoU(U))){
                 printf("Enemy has been slain!\n");
              }
-            Retaliate(InfoU(U), &CurrentUnit(*P1));
+            Retaliate(InfoU(U), &CurrentUnit(*A));
             printf("step 7\n");
             if(Prec!=Nil){
-                DelAfterU(&Units(*P2), &P, Prec);
+                DelAfterU(&Units(*B), &Pt, Prec);
+                printf("step 7.1\n");
+                PrintListU(Units(*B));
                 if(!IsDead(InfoU(U))){
-                    InsertAfterU(&Units(*P2), U, Prec);
-                    CurrentUnit(*P2)=InfoU(U);
+                    CurrentUnit(*B)=InfoU(U);
+                    InsertAfterU(&Units(*B), U, Prec);
+                    printf("step 8\n");        
+                }
+                else{
+                	CurrentUnit(*B)=InfoU(FirstU(Units(*B)));
+                    printf("step 9\n");
                 }
             }
             else{
-                DelFirstU(&Units(*P2), &P);
+                DelFirstU(&Units(*B), &Pt);
+                printf("step 7.2\n");
+                PrintListU(Units(*B));
                 if(!IsDead(InfoU(U))){
-                    InsertFirstU(&Units(*P2), U);
-                    CurrentUnit(*P2)=InfoU(U);
+                    CurrentUnit(*B)=InfoU(U);
+                    InsertFirstU(&Units(*B), U);
+                    printf("step 10\n");
                 }
-                printf("P2, yang diupdate: \n");PrintUnit(InfoU(FirstU(Units(*P2))));printf("\n");
+                else{
+                	CurrentUnit(*B)=InfoU(FirstU(Units(*B)));
+                    printf("step 11\n");
+                }
+                //printf("enemy, yang diupdate: \n");PrintUnit(InfoU(FirstU(Units(*B))));printf("\n");
             }
-            printf("step 8\n");
+            Unit X = CurrentUnit(*A);
+            addressU UX;
+            UX=AlokasiU(X);
+             if(PrecU!=Nil){
+                DelAfterU(&Units(*A), &Pu, PrecU);
+                printf("step 11.1\n");
+                PrintListU(Units(*A));
+                if(!IsDead(InfoU(UX))){
+                    CurrentUnit(*A)=InfoU(UX);
+                    InsertAfterU(&Units(*A), UX, PrecU);
+                   printf("step 12\n");
+                }
+                else{
+                  //  printf("nextprec: \n");PrintUnit(InfoU(NextU(Prec)));printf("\n");
+                	CurrentUnit(*A)=InfoU(FirstU(Units(*A)));
+                    printf("step 13\n");
+                }
+            }
+            else{
+                DelFirstU(&Units(*A), &Pu);
+                PrintListU(Units(*A));
+                printf("step 11.2\n");
+                if(!IsDead(InfoU(UX))){
+                    CurrentUnit(*A)=InfoU(UX);
+                    InsertFirstU(&Units(*A), UX);
+                    printf("step 14\n");
+                }
+                else{
+                //    printf("nextprec: \n");PrintUnit(InfoU(NextU(Prec)));printf("\n");
+                	CurrentUnit(*A)=InfoU(FirstU(Units(*A)));
+                    printf("step 15\n");
+                }
+             //   printf("enemy, yang diupdate: \n");PrintUnit(InfoU(FirstU(Units(*B))));printf("\n");
+            }
+            //printf("step 8\n");
             /*printf("P1:\n");PrintUnit(CurrentUnit(*P1)); printf("\n");
             addressU Pu;
             Pu=FirstU(Units(*P2));
@@ -332,27 +421,17 @@ void AttackAndRetaliate(Player *P1, Player *P2){
                 Pu=NextU(Pu);
             }
             printf("P2:\n");PrintUnit(InfoU(Pu));printf("\n");*/
-            printf("P2 List Units:\n");
-            addressU Pu;
-            Pu=FirstU(Units(*P2));
-            while(Pu!=Nil){
-                PrintUnit(InfoU(Pu));printf("\n");
-                Pu=NextU(Pu);
-            }
-            printf("step finish\n");
         }
         else{
+            printf("\n");
             printf("There are no enemies to attack!!\n");
         }
     }
     else{
+        printf("\n");
         printf("You already attacked!\n");
     }
-    UpdatePlayer(*P1);
-    PrintUnit(CurrentUnit(*P1));
-    UpdatePlayer(*P2);
-    PrintUnit(InfoU(U));
-}
+ }
 
 void PrintListEnemy (ListU L, int *choice){
 /* Kamus */
@@ -361,19 +440,18 @@ void PrintListEnemy (ListU L, int *choice){
     Unit U;
     POINT T;
 /* Algoritma */
+    printf("\n");
     printf("Please select enemy you want to attack:\n");
-    printf("step 2.1\n");
     if (!IsEmptyU(L)){
         i = 1 ;
         P = FirstU(L);
-        printf("step 2.2\n");
         while (P!=Nil){
             U = InfoU(P);
             T = GetLocation(U);
             printf("%d. ", i);
-            printf("step 2.3\n");
+        
             if (U.id==1) {
-                printf("King (%d,%d) | Health %d/%d", T.X, T.Y, U.health, U.max_health);
+                printf("King (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
             }
             else if (U.id==2){
                 printf("Archer (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
@@ -384,30 +462,31 @@ void PrintListEnemy (ListU L, int *choice){
             else if (U.id==4){
                 printf("White Mage (%d,%d) | Health %d/%d \n", T.X, T.Y, U.health, U.max_health);
             }
-            printf("step 2.4\n");
+            
+            printf("\n");
             /*if ((U.id ==1)||(U.atk_type == CurrentUnit(*P).atk_type)) {
                 printf(" (Retaliates)\n");
             }*/
             P = NextU(P);
             i++;
-            printf("step 2.5\n");
+            
         }
         int c;
         do {
-            printf("step 2.6\n");
+            
             printf("Select enemy you want to attack : \n"); scanf("%d", &c);
             if (c<0 || c>i){
                 printf("The number you entered is not in list!\n");
             }
         } while (c<0 || c>i);
         *choice=c;
-        printf("step 2.7\n");
+        
     }
-   }
+}
 
 int winningcheck () {
     boolean found1 = false, found2 = false;
-    addressU Pt1 = FirstU(Units(P1));
+    addressU Pt1 = FirstU(Units(InfoHead(QTurn)));
     while (Pt1 != Nil && !found1)
     {
         if(InfoU(Pt1).id == 1)
@@ -416,7 +495,8 @@ int winningcheck () {
         }
         else Pt1 = NextU(Pt1);
     }
-    addressU Pt2 = FirstU(Units(P2));
+   // printf("id pt1 %d\n",InfoU(Pt1).id);
+    addressU Pt2 = FirstU(Units(InfoTail(QTurn)));
     while (Pt2 != Nil && !found2)
     {
         if(InfoU(Pt2).id == 1)
@@ -425,7 +505,39 @@ int winningcheck () {
         }
         else Pt2 = NextU(Pt2);
     }
+    //printf("id pt2 %d\n",InfoU(Pt2).id);
     if(found1 && found2) return 0;
-    else if(found1 && !found2) return 1;
-    else return 2;
+    else if(found1 && !found2) return Id(InfoHead(QTurn));
+    else return Id(InfoTail(QTurn));
+}
+
+void HealPlayer(Player *P){
+
+    addressU W;
+    W=FirstU(Units(*P));
+    //searching whitemagenya dulu
+    while(W!=Nil){
+        if(InfoU(W).id==4){
+            addressU U;
+            U=FirstU(Units(*P));
+            //searching units yang adjacent
+            while(U!=Nil){
+                if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U)))-1 && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))){
+                    Heal(InfoU(W), &InfoU(U));
+                }
+                else if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U)))+1 && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))){
+                    Heal(InfoU(W), &InfoU(U));
+                }
+                else if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))-1){
+                    Heal(InfoU(W), &InfoU(U));
+                }
+                else if (Absis(GetLocation(InfoU(W))) ==  Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))+1){
+                    Heal(InfoU(W), &InfoU(U));
+                }
+                U=NextU(U);
+            }
+        }
+        W=NextU(W);
+    }
+    UpdatePlayer(*P);
 }

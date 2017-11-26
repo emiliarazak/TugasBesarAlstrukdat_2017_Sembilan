@@ -35,4 +35,6 @@ void PrintListEnemy (ListU L, int *choice);
 
 int winningcheck();
 
+void HealPlayer(Player *P);
+
 #endif

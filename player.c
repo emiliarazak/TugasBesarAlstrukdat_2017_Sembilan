@@ -6,8 +6,8 @@
 #include "stacklist.h"
 #include "listpoint.h"
 
-extern Player P1;
-extern Player P2;
+Player P1;
+Player P2;
 
 void CreatePlayer (Player *P,int id)
 {
@@ -167,7 +167,7 @@ void ChangeUnit(Player *P)
 /* Algoritma */
     i = 1;
     Pt = FirstU(Units(*P));
-    printf("=== List of Units ===\n");
+    printf("\n=== List of Units ===\n");
     while(Pt!=Nil){
         printf("%d. ", i);
         PrintUnit(InfoU(Pt));
@@ -391,16 +391,58 @@ void UpdatePlayer(Player CurrP)
 /* Algoritma */
     if (CurrP.id == 1){
         P1 = CurrP ;
+        PrintUnit(CurrentUnit(P1));
+        //printf("\nhaai ini update P1 dari player.c\n");
+    
     }
     else {
         if (CurrP.id == 2){
             P2 = CurrP;
+            PrintUnit(CurrentUnit(P2));
+            //printf("haai ini update P2 dari player.c\n");     
+    
         }
     }
 }
 
-void TerminateDeadUnit (Player *P){
-    
+
+void NextUnit(Player *P){
+    Unit U = CurrentUnit(*P);
+    addressU A = FirstU(Units(*P));
+    boolean found = false;
+    while (A!=Nil && !found){ // mencari A
+        if (EQ(U.location,InfoU(A).location)){
+            found = true;
+        }
+        else {
+            A = NextU(A);
+        }
+    }
+    if (NextU(A)!=Nil){//dia bukan di akhir
+        //A=NextU(A);
+        while (NextU(A)!=Nil && ((!InfoU(A).atk_chance) && InfoU(A).mov_points==0)){
+            A = NextU(A);
+        }
+    }
+
+    if (NextU(A)!=Nil){
+        CurrentUnit(*P) = InfoU((A));
+    }
+    else { //kalau sudah di akhir, kembali ke first dulu
+        A = FirstU(Units(*P));
+        if(InfoU(A).mov_points == 0 && !InfoU(A).atk_chance){
+            do{
+                A = NextU(A);
+            } while(A != Nil && (InfoU(A).mov_points == 0 && (!InfoU(A).atk_chance)));
+            if(A == Nil || EQ(InfoU(A).location,U.location)){
+                printf("You have no available unit \n");
+            }else{
+                CurrentUnit(*P) = InfoU(A);
+            }
+        }else{
+            CurrentUnit(*P) = InfoU(A);
+        }
+    }
 }
 
 void RecoverGoldMove (Player *P)

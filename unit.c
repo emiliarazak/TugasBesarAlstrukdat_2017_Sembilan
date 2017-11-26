@@ -111,7 +111,7 @@ void CreateWhiteMage(Unit *w) {
 
 /*Mengirimkan kondisi kematian Unit X*/
 boolean IsDead(Unit X) {
-	return ((X).health==0);
+	return ((X).health<=0);
 }
 
 /*Mengirimkan kondisi kesempatan menyerang Unit X*/
@@ -176,6 +176,9 @@ void Attack(Unit *X, Unit *Y) {
 		chance = 10-chance;
 		if(r<=chance){
 			(*Y).health -= (*X).attack;
+			if((*Y).health<0){
+				(*Y).health=0;
+			}
 			if((*X).id==1){
 				printf("King has dealt %d damage!\n", (*X).attack);
 			}
@@ -224,6 +227,9 @@ void Retaliate(Unit X, Unit *Y) {
 			chance = 10-chance;
 			if(r <= chance){
 				(*Y).health -= X.attack;
+				if((*Y).health<0){
+					(*Y).health=0;
+				}
 				printf("King returns %d damage!\n", X.attack);
 			}
 			else{
@@ -242,6 +248,9 @@ void Retaliate(Unit X, Unit *Y) {
 				chance = 10-chance;
 				if(r <= chance){
 					(*Y).health -= X.attack;
+					if((*Y).health<0){
+						(*Y).health=0;
+					}
 					if(X.id==2){
 						printf("Archer returns %d damage!\n", X.attack);
 					}
@@ -275,9 +284,23 @@ void Retaliate(Unit X, Unit *Y) {
 /*Prekondisi: Adjacent*/
 void Heal(Unit X, Unit *Y) {
 	if((X).id==4){
-		(*Y).health+=(X).heal;
-		if((*Y).health>(*Y).max_health){
-			(*Y).health=(*Y).max_health;
+		if((*Y).health<(*Y).max_health){
+			(*Y).health+=(X).heal;
+			if((*Y).health>(*Y).max_health){
+				(*Y).health=(*Y).max_health;
+			}
+			if((*Y).id==1){
+				printf("King has been healed!\n");
+			}
+			else if((*Y).id==2){
+				printf("Archer has been healed!\n");
+			}
+			else if((*Y).id==3){
+				printf("Swordsman has been healed!\n");
+			}
+			else if((*Y).id==4){
+				printf("White Mage has been healed!\n");
+			}	
 		}
 	}
 }

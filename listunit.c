@@ -267,17 +267,15 @@ void DelAfterU (ListU *L, addressU *Pdel, addressU Prec)
 {
 /* Kamus */
 /* Algoritma */
-    *Pdel = NextU(Prec);
-    if (*Pdel == LastU(*L)){
-        DelLastU(L,Pdel);
+    if(NextU(NextU(Prec))!=Nil){
+        *Pdel=NextU(Prec);
+        NextU(Prec)=NextU(*Pdel);
+        PrevU(NextU(*Pdel))=Prec;
+        NextU(*Pdel)=Nil;
+        PrevU(*Pdel)=Nil;
     }
     else{
-        if (*Pdel!=Nil){
-            NextU(Prec) = NextU(*Pdel);
-            PrevU(NextU(*Pdel)) = Prec;
-            PrevU(*Pdel) = Nil;
-            NextU(*Pdel) = Nil;
-        }
+        DelLastU(L, Pdel);
     }
 }
 

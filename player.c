@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include "player.h"
-#include "unit.h"
-#include "map.h"
 #include "queue.h"
-#include "stacklist.h"
-#include "listpoint.h"
-
-Player P1;
-Player P2;
 
 void CreatePlayer (Player *P,int id)
 {

@@ -3,7 +3,6 @@
 /* By : Deborah Aprilia Josephine / 13516152 */
 
 #include "listpoint.h"
-#include "point.h"
 #include <stdlib.h>
 #include <stdio.h>
 

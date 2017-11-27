@@ -8,7 +8,6 @@
 #include "boolean.h"
 #include "unit.h"
 #include "point.h"
-#include <stdlib.h>
 
 #define Nil NULL
 

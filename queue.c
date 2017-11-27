@@ -1,9 +1,9 @@
-#include "boolean.h"
+
 #include "queue.h"
+#include "player.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
-#include "player.h"
 
 Queue QTurn;
 

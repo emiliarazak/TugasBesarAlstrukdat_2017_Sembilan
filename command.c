@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "command.h"
+#include "player.h"
+#include "mesinkata.h"
+#include "queue.h"
 #include "stacklist.h"
 
 Kata ComStart;
@@ -18,117 +21,6 @@ Kata CommNextUnit;
 boolean end =false;
 
 Stack S ;
-
-void StartGame()
-{
-    int X,Y;
-    do{
-        printf("Enter the size of map (X Y): ");
-        scanf("%d",&X);
-        scanf("%d",&Y);
-        if ((Y<8)||(X<8)||(Y>100)||(X>100)){
-            printf("The minimum size is 8x8 and the maximum is 100x100\n");
-        }
-    }while((Y<8)||(X<8)||(Y>100)||(X>100));
-
-    InitMap(X,Y);
-    CreatePlayer(&P1,1);
-    CreatePlayer(&P2,2);
-    CreateTurn (&QTurn,P1,P2);
-    initialkata();
-    openingturn();
-    readcommand();
-}
-
-void openingturn ()
-{
-    if(end) 
-    {
-        CurrentUnit(InfoHead(QTurn)).mov_points=CurrentUnit(InfoHead(QTurn)).max_mov_points;
-        CurrentUnit(InfoHead(QTurn)).atk_chance=true;
-    }
-    printf("\n\n");
-    UpdateGiliranUnitMap(CurrentUnit(InfoHead(QTurn)).location,true);
-    printf("Player %d's Turn\n",Id(InfoHead(QTurn)));
-    PrintAttribute (InfoHead(QTurn));
-    PrintUnit(CurrentUnit(InfoHead(QTurn)));
-    printf("\nYour input : ");
-}
-
-void execute ()
-{
-	printf("\n");
-	HealPlayer(&InfoHead(QTurn));
-    if(IsKataSama (CKata,ComMove))
-    {
-        boolean found=false;
-        addressU Pt;
-        POINT lokasiawal=CurrentUnit(InfoHead(QTurn)).location;
-        Move(&InfoHead(QTurn));
-        Pt= FirstU(Units(InfoHead(QTurn)));
-        while(Pt!=Nil && !found)
-        {
-            if(EQ(lokasiawal,InfoU(Pt).location))
-            {
-                InfoU(Pt).location=CurrentUnit(InfoHead(QTurn)).location;
-                InfoU(Pt).mov_points=CurrentUnit(InfoHead(QTurn)).mov_points;
-                found=true;
-            }
-            else Pt=NextU(Pt);
-        }
-        end=false;
-    }
-    else if(IsKataSama (CKata,ComUndo))
-    {
-        Undo(&InfoHead(QTurn));
-        end=false;
-    }
-    else if(IsKataSama (CKata,ComChange_Unit))
-    {
-    CreateEmpty (&S);
-        ChangeUnit(&InfoHead(QTurn));
-        end=false;
-    }
-    else if(IsKataSama (CKata,ComRecruit))
-    {
-    CreateEmpty (&S);
-        Recruit (&InfoHead(QTurn));
-        end=false;
-    }
-    else if(IsKataSama (CKata,ComAttack))
-    {
-    CreateEmpty (&S);
-    AttackAndRetaliate(&InfoHead(QTurn), &InfoTail(QTurn));
-    end=false;
-    }
-    else if(IsKataSama (CKata,ComMap))
-    {
-        PrintMap();
-        end=false;
-    }
-    else if(IsKataSama (CKata,ComInfo))
-    {
-        InfoMap();
-        end=false;
-    }
-    else if(IsKataSama (CKata,ComEnd_Turn))
-    {
-        CreateEmpty (&S);
-        RecoverGoldMove(&InfoHead(QTurn));
-        EndTurn (&InfoHead(QTurn));
-        end =true;
-    }
-    else if(IsKataSama (CKata,ComSave))
-    {
-        CreateEmpty (&S);
-        end=false;
-    }
-    else if (IsKataSama(CKata,CommNextUnit)){
-        NextUnit(&InfoHead(QTurn));
-        end = false ;
-    }
-    else printf("Invalid command\n");
-}
 
 void initialkata()
 {
@@ -215,10 +107,126 @@ void initialkata()
     CommNextUnit.Length=9;
 }
 
+void StartGame()
+{
+	Player P1,P2;
+    int X,Y;
+    do{
+        printf("Enter the size of map (X Y): ");
+        scanf("%d",&X);
+        scanf("%d",&Y);
+        if ((Y<8)||(X<8)||(Y>100)||(X>100)){
+            printf("The minimum size is 8x8 and the maximum is 100x100\n");
+        }
+    }while((Y<8)||(X<8)||(Y>100)||(X>100));
+
+    InitMap(X,Y);
+    CreatePlayer(&P1,1);
+    CreatePlayer(&P2,2);
+    CreateTurn (&QTurn,P1,P2);
+    initialkata();
+    openingturn();
+    readcommand();
+}
+
+void openingturn ()
+{
+	/* Algoritma */
+    if(end) 
+    {
+        CurrentUnit(InfoHead(QTurn)).mov_points=CurrentUnit(InfoHead(QTurn)).max_mov_points;
+        CurrentUnit(InfoHead(QTurn)).atk_chance=true;
+    }
+    printf("\n\n");
+    UpdateGiliranUnitMap(CurrentUnit(InfoHead(QTurn)).location,true);
+    printf("Player %d's Turn\n",Id(InfoHead(QTurn)));
+    PrintAttribute (InfoHead(QTurn));
+    PrintUnit(CurrentUnit(InfoHead(QTurn)));
+    printf("\nYour input : ");
+}
+
+void execute ()
+{
+	/* Algoritma */
+	printf("\n");
+	HealPlayer(&InfoHead(QTurn));
+    if(IsKataSama (CKata,ComMove))
+    {
+        boolean found=false;
+        addressU Pt;
+        POINT lokasiawal=CurrentUnit(InfoHead(QTurn)).location;
+        Move(&InfoHead(QTurn));
+        Pt= FirstU(Units(InfoHead(QTurn)));
+        while(Pt!=Nil && !found)
+        {
+            if(EQ(lokasiawal,InfoU(Pt).location))
+            {
+                InfoU(Pt).location=CurrentUnit(InfoHead(QTurn)).location;
+                InfoU(Pt).mov_points=CurrentUnit(InfoHead(QTurn)).mov_points;
+                found=true;
+            }
+            else Pt=NextU(Pt);
+        }
+        end=false;
+    }
+    else if(IsKataSama (CKata,ComUndo))
+    {
+        Undo(&InfoHead(QTurn));
+        end=false;
+    }
+    else if(IsKataSama (CKata,ComChange_Unit))
+    {
+    CreateEmpty (&S);
+        ChangeUnit(&InfoHead(QTurn));
+        end=false;
+    }
+    else if(IsKataSama (CKata,ComRecruit))
+    {
+    CreateEmpty (&S);
+        Recruit (&InfoHead(QTurn));
+        end=false;
+    }
+    else if(IsKataSama (CKata,ComAttack))
+    {
+    CreateEmpty (&S);
+    AttackAndRetaliate(&InfoHead(QTurn), &InfoTail(QTurn));
+    end=false;
+    }
+    else if(IsKataSama (CKata,ComMap))
+    {
+        PrintMap();
+        end=false;
+    }
+    else if(IsKataSama (CKata,ComInfo))
+    {
+        InfoMap();
+        end=false;
+    }
+    else if(IsKataSama (CKata,ComEnd_Turn))
+    {
+        CreateEmpty (&S);
+        RecoverGoldMove(&InfoHead(QTurn));
+        EndTurn (&InfoHead(QTurn));
+        end =true;
+    }
+    else if(IsKataSama (CKata,ComSave))
+    {
+        CreateEmpty (&S);
+        end=false;
+    }
+    else if (IsKataSama(CKata,CommNextUnit)){
+        NextUnit(&InfoHead(QTurn));
+        end = false ;
+    }
+    else printf("Invalid command\n");
+}
+
 void readcommand()
 {
+	/* Kamus */
     FILE * pita;
     char command [20];
+    /* Algoritma */
     scanf("%s",command);
     pita=fopen("pitakar.txt","w");
     fprintf(pita,"%s.",command);
@@ -244,6 +252,7 @@ void readcommand()
 }
 
 void AttackAndRetaliate(Player *A, Player *B){
+    /* Kamus */
     POINT UnitLoc, EnemyLoc;
     int choice;
     int i;
@@ -384,12 +393,12 @@ void AttackAndRetaliate(Player *A, Player *B){
  }
 
 void PrintListEnemy (ListU L, int *choice){
-/* Kamus */
+	/* Kamus */
     int i;
     addressU P ;
     Unit U;
     POINT T;
-/* Algoritma */
+	/* Algoritma */
     printf("\n");
     printf("Please select enemy you want to attack:\n");
     if (!IsEmptyU(L)){
@@ -430,9 +439,50 @@ void PrintListEnemy (ListU L, int *choice){
     }
 }
 
+void HealPlayer(Player *P){
+    addressU W;
+    W=FirstU(Units(*P));
+    /* searching whitemagenya dulu */
+    while(W!=Nil){
+        if(InfoU(W).id==4){
+            addressU U;
+            U=FirstU(Units(*P));
+            /* searching units yang adjacent */
+            while(U!=Nil){
+                if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U)))-1 && 
+						Ordinat(GetLocation(InfoU(W))) == Ordinat(GetLocation(InfoU(U)))){
+                    Heal(InfoU(W), &InfoU(U));
+					if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P))))
+						CurrentUnit(*P).health=CurrentUnit(*P).max_health;
+                }else if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U)))+1 && 
+						Ordinat(GetLocation(InfoU(W))) == Ordinat(GetLocation(InfoU(U)))){
+                    Heal(InfoU(W), &InfoU(U));
+					if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P)))) 
+						CurrentUnit(*P).health=CurrentUnit(*P).max_health;
+                }else if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U))) && 
+						Ordinat(GetLocation(InfoU(W))) == Ordinat(GetLocation(InfoU(U)))-1){
+                    Heal(InfoU(W), &InfoU(U));
+					if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P))))
+						CurrentUnit(*P).health=CurrentUnit(*P).max_health;
+				}else if (Absis(GetLocation(InfoU(W))) ==  Absis(GetLocation(InfoU(U))) && 
+						Ordinat(GetLocation(InfoU(W))) == Ordinat(GetLocation(InfoU(U)))+1){
+					Heal(InfoU(W), &InfoU(U));
+					if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P))))
+						CurrentUnit(*P).health=CurrentUnit(*P).max_health;
+				}
+				U=NextU(U);
+			}	
+        }
+        W=NextU(W);
+    }
+}
+
 int winningcheck () {
+	/* kamus */
     boolean found1 = false, found2 = false;
     addressU Pt1 = FirstU(Units(InfoHead(QTurn)));
+    
+    /* Algoritma */
     while (Pt1 != Nil && !found1)
     {
         if(InfoU(Pt1).id == 1)
@@ -450,41 +500,10 @@ int winningcheck () {
         }
         else Pt2 = NextU(Pt2);
     }
-    if(found1 && found2) return 0;
-    else if(found1 && !found2) return Id(InfoHead(QTurn));
-    else return Id(InfoTail(QTurn));
-}
-
-void HealPlayer(Player *P){
-
-    addressU W;
-    W=FirstU(Units(*P));
-    //searching whitemagenya dulu
-    while(W!=Nil){
-        if(InfoU(W).id==4){
-            addressU U;
-            U=FirstU(Units(*P));
-            //searching units yang adjacent
-            while(U!=Nil){
-                if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U)))-1 && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))){
-                    Heal(InfoU(W), &InfoU(U));
-		    if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P)))) CurrentUnit(*P).health=CurrentUnit(*P).max_health;
-                }
-                else if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U)))+1 && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))){
-                    Heal(InfoU(W), &InfoU(U));
-		    if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P)))) CurrentUnit(*P).health=CurrentUnit(*P).max_health;
-                }
-                else if (Absis(GetLocation(InfoU(W))) == Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))-1){
-                    Heal(InfoU(W), &InfoU(U));
-		    if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P)))) CurrentUnit(*P).health=CurrentUnit(*P).max_health;
-                }
-                else if (Absis(GetLocation(InfoU(W))) ==  Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(W)))==Ordinat(GetLocation(InfoU(U)))+1){
-                    Heal(InfoU(W), &InfoU(U));
-		    if(EQ(GetLocation(InfoU(U)),GetLocation(CurrentUnit(*P)))) CurrentUnit(*P).health=CurrentUnit(*P).max_health;
-                }
-                U=NextU(U);
-            }
-        }
-        W=NextU(W);
-    }
+    if(found1 && found2)
+		return 0;
+    else if(found1 && !found2)
+		return Id(InfoHead(QTurn));
+    else 
+		return Id(InfoTail(QTurn));
 }

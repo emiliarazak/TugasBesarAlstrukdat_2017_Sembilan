@@ -3,8 +3,6 @@
 /* By : Deborah Aprilia Josephine / 13516152 */
 
 #include "listunit.h"
-#include "point.h"
-#include "unit.h"
 #include <stdlib.h>
 #include <stdio.h>
 

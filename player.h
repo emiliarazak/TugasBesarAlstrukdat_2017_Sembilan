@@ -1,10 +1,12 @@
 #ifndef player_H
 #define player_H
+
 #include "boolean.h"
 #include "unit.h"
 #include "listunit.h"
 #include "listpoint.h"
 #include "map.h"
+#include "stacklist.h"
 
 typedef struct
 {
@@ -18,9 +20,6 @@ typedef struct
 	int upKeep;
     Unit current_unit;
 } Player;
-
-extern Player P1;
-extern Player P2;
 
 #define Id(P) (P).id
 #define Gold(P) (P).gold

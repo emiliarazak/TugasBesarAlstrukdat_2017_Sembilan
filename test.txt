@@ -1,4 +1,0 @@
-1. Recruit di castle org SOLVED
-2. Health setelah attack dan change unit balik ke awal
-3. Menang kalah belum dibuat SOLVED
-4. 

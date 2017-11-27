@@ -167,22 +167,7 @@ void InsertAfterU (ListU *L, addressU P, addressU Prec)
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec */
 {
 /* Kamus */
-   /* addressU i ;
-/* Algoritma 
-    //Mencari Prec dan i = NextU(Prec)
-    i = FirstU(*L);
-    while (PrevU(i) != Prec) {
-        i = NextU(i);
-    }
-    if (i != Nil){
-        PrevU(P) = Prec ;
-        NextU(P) = i;
-        NextU(Prec) = P ;
-        PrevU(i) = P;
-    }
-    else{
-        InsertLastU(L,P);
-    }*/
+/* Algoritma */
 
     if(NextU(Prec)!=Nil){
         PrevU(NextU(Prec))=P;
@@ -265,16 +250,6 @@ void DelAfterU (ListU *L, addressU *Pdel, addressU Prec)
 	{
 		NextU(Prec)=NextU(*Pdel);
 	}
-    /*if(NextU(NextU(Prec))!=Nil){
-        *Pdel=NextU(Prec);
-        NextU(Prec)=NextU(*Pdel);
-        PrevU(NextU(*Pdel))=Prec;
-        NextU(*Pdel)=Nil;
-        PrevU(*Pdel)=Nil;
-    }
-    else{
-        DelLastU(L, Pdel);
-    }*/
 }
 
 void DelBeforeU (ListU *L, addressU *Pdel, addressU Succ)

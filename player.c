@@ -394,22 +394,6 @@ void AkuisisiVillage(Player *P, POINT Loc)
     }
 }
 
-void UpdatePlayer(Player CurrP)
-/* Mengupdate seluruh informasi Current Player ke Player */
-{
-/* Kamus */
-/* Algoritma */
-    if (CurrP.id == 1){
-        P1 = CurrP ;
-    }
-    else {
-        if (CurrP.id == 2){
-            P2 = CurrP;
-        }
-    }
-}
-
-
 void NextUnit(Player *P){
     Unit U = CurrentUnit(*P);
     addressU A = FirstU(Units(*P));

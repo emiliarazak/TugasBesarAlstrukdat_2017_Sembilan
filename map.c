@@ -192,7 +192,7 @@ void setVillage(int numVillage){
 /* meletakkan village tanpa pemilik secara random 
    tanpa mengganggu letak kerajaan */
     int i;
-    for(i = 0; i < numVillage; i++){
+    for(i = AbsisMin; i < numVillage; i++){
 		UpdateBangunanMap(getRandomPoint(), 3, 0);
 	}
 }
@@ -298,14 +298,13 @@ boolean IsPointInMap(int x, int y){
 
 POINT getKingPoint(int playerId){
 /* Mengembalikan point <x,y> dimana King milik playerId berada */
-	POINT P;
+	POINT P = MakePOINT(0,0);
 	int i, j;
-	P = MakePOINT(0, 0);
-	for(i = 0; i < M.NAbsisEff; i++){
-		for(j = 0; j < M.NOrdEff; j++){
-			if(getUnitId(i, j) == 1){
-				if(getUnitOwner(i, j) == playerId)
-					P = MakePOINT(i, j);
+	for(i = AbsisMin; i < M.NAbsisEff; i++){
+		for(j = OrdMin; j < M.NOrdEff; j++){
+			if(getUnitId(i, j) == 1 && /* King */ 
+					getUnitOwner(i, j) == playerId){
+				P = MakePOINT(i, j);
 			}
 		}
 	}

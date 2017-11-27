@@ -53,8 +53,6 @@ void InfoMap();
 /* Menampilkan info yang ada pada sebuah petak */
 void AkuisisiVillage(Player *P, POINT Loc);
 /* Mengakuisisi village */
-void UpdatePlayer(Player CurrP);
-/* Mengupdate seluruh informasi Current Player ke Player */
 void NextUnit(Player *P);
 /* Mencari next unit yang masih memiliki movement points atau chance attack */
 void RecoverGoldMove (Player *P);

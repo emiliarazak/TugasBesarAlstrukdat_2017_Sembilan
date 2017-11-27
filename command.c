@@ -226,8 +226,10 @@ void readcommand()
     STARTKATA();
     while (!IsKataSama (CKata,ComExit) && winningcheck()==0){
         execute();
-        if (winningcheck()==1) printf("\nPLAYER 1 WIN THE GAME\nPLAYER 2 LOSE THE GAME\nGAME OVER\n\n");
-        else if (winningcheck()==2) printf("\nPLAYER 2 WIN THE GAME\nPLAYER 1 LOSE THE GAME\nGAME OVER\n\n");
+        if (winningcheck()==1) 
+			printf("\nPLAYER 1 WIN THE GAME\nPLAYER 2 LOSE THE GAME\nGAME OVER\n\n");
+        else if (winningcheck()==2) 
+			printf("\nPLAYER 2 WIN THE GAME\nPLAYER 1 LOSE THE GAME\nGAME OVER\n\n");
         else
         {
         	openingturn ();
@@ -291,7 +293,8 @@ void AttackAndRetaliate(Player *A, Player *B){
             Pt=FirstU(Units(*B));
             Prec=Nil;
             while(Pt!=Nil && !found){
-                if(Absis(GetLocation(InfoU(Pt)))==Absis(GetLocation(InfoU(U))) && Ordinat(GetLocation(InfoU(Pt)))==Ordinat(GetLocation(InfoU(U)))){
+                if(Absis(GetLocation(InfoU(Pt)))==Absis(GetLocation(InfoU(U))) &&
+						Ordinat(GetLocation(InfoU(Pt)))==Ordinat(GetLocation(InfoU(U)))){
                     found=true;
                 }
                 else{
@@ -305,7 +308,8 @@ void AttackAndRetaliate(Player *A, Player *B){
             PrecU=Nil;
             Pu=FirstU(Units(*A));
             while(Pu!=Nil && !found){
-                if(Absis(GetLocation(InfoU(Pu)))==Absis(GetLocation(CurrentUnit(*A))) && Ordinat(GetLocation(InfoU(Pu)))==Ordinat(GetLocation(CurrentUnit(*A)))){
+                if(Absis(GetLocation(InfoU(Pu)))==Absis(GetLocation(CurrentUnit(*A))) && 
+						Ordinat(GetLocation(InfoU(Pu)))==Ordinat(GetLocation(CurrentUnit(*A)))){
                     found=true;
                 }
                 else{
@@ -416,7 +420,6 @@ void PrintListEnemy (ListU L, int *choice){
         }
         int c;
         do {
-            
             printf("Select enemy you want to attack : "); scanf("%d", &c);
             if (c<0 || c>i){
                 printf("The number you entered is not in list!\n");
@@ -484,5 +487,4 @@ void HealPlayer(Player *P){
         }
         W=NextU(W);
     }
-    UpdatePlayer(*P);
 }

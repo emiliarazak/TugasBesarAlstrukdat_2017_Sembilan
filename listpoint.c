@@ -342,28 +342,7 @@ void PrintListP (ListP L)
         i = 1;
         while (P!=Nil){
             Prop = InfoP(P);
-            //L = GetLocation(U);
             printf("%d. ", i);
-            /*
-            if (U.id == 1) {
-                printf("King (%d,%d) | Health %d\n", L.X, L.Y, U.health);
-            }
-            else {
-                if (U.id ==2 ){
-                    printf("Archer (%d,%d) | Health %d\n", L.X, L.Y, U.health);
-                }
-                else {
-                    if (U.id ==3){
-                        printf("Swordsman (%d,%d) | Health %d\n", L.X, L.Y, U.health);
-                    }
-                    else {
-                        if (U.id == 4){
-                            printf("White Mage (%d,%d) | Health %d\n", L.X, L.Y, U.health);
-                        }
-                    }
-                }
-            }
-            */
             printf("(%d,%d)\n", InfoP(P).X, InfoP(P).Y);
             P = NextP(P);
             i++;

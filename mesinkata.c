@@ -1,16 +1,6 @@
-#ifndef __MESINKATA_H__
-#define __MESINKATA_H__
-
 #include "boolean.h"
 #include "mesinkar.h"
-
-#define NMax 50
-#define BLANK ' '
-
-typedef struct {
-	char TabKata[NMax+1]; /* container penyimpan kata, indeks yang dipakai [1..NMax] */
-    int Length;
-} Kata;
+#include "mesinkata.h"
 
 /* State Mesin Kata */
 boolean EndKata;
@@ -85,5 +75,3 @@ boolean IsKataSama (Kata K1, Kata K2){
 
    return issama;
 }
-
-#endif

@@ -100,7 +100,7 @@ void Recruit (Player *P)
         do{
             scanf("%d", &unit_id);
             if(unit_id<1 || unit_id>3){
-                printf("That's not a valid number, try again!!\n");
+                printf("That's not a valid number, try again!!\nEnter no. of unit you want to recruit: ");
             }
         }while(unit_id <1 || unit_id >3);
 
@@ -220,19 +220,21 @@ void Move(Player *P) {
     boolean tembus;
     int x,y,i,jarak;
     POINT coordinate;
-    PrintMap();
-    do {
-        printf("Please enter cell's coordinate x y: ");
-        scanf("%d %d", &x, &y);
-        if (x<0 || x> M.NAbsisEff || y<0 || y>M.NOrdEff){
-            printf("The cell's coordinate you entered is not in the map!\n");
-            printf("Enter the cell's coordinate in range of map\n");
-        }
-    } while (x<0 || x> M.NAbsisEff || y<0 || y>M.NOrdEff);
     if (CurrentUnit(*P).mov_points == 0){
         printf("You have no movement points! Change to other unit!\n");
     }
     else {
+        PrintMap();
+        do
+        {
+            printf("Please enter cell's coordinate x y: ");
+            scanf("%d %d", &x, &y);
+            if (x<0 || x> M.NAbsisEff || y<0 || y>M.NOrdEff){
+                printf("The cell's coordinate you entered is not in the map!\n");
+                printf("Enter the cell's coordinate in range of map\n");
+            }
+        }
+        while (x<0 || x> M.NAbsisEff || y<0 || y>M.NOrdEff);
         coordinate=MakePOINT(x,y);
         if (IsNoUnit(x,y))
         {
@@ -259,7 +261,11 @@ void Move(Player *P) {
                         TulisPOINT (coordinate);
                         printf("\n");
                         UpdateUnitMap(coordinate, CurrentUnit(*P).id,Id(*P));
-                        if(getBangunanId(x,y)==3) AkuisisiVillage(P,coordinate);
+                        if(getBangunanId(x,y)==3)
+			{
+				CurrentUnit(*P).mov_points=0;
+				AkuisisiVillage(P,coordinate);
+    		    	}
                     }
                     else printf("You can't move there\n");
                 }
@@ -288,7 +294,11 @@ void Move(Player *P) {
                         TulisPOINT (coordinate);
                         printf("\n");
                         UpdateUnitMap(coordinate, CurrentUnit(*P).id,Id(*P));
-                        if(getBangunanId(x,y)==3) AkuisisiVillage(P,coordinate);
+                        if(getBangunanId(x,y)==3)
+			{
+				CurrentUnit(*P).mov_points=0;
+				AkuisisiVillage(P,coordinate);
+    		    	}
                     }
                     else printf("You can't move there\n");
                 }
@@ -302,7 +312,7 @@ void Move(Player *P) {
         else printf("Enemy's ");
         if(getUnitId(x,y)==1) printf("King ");
         else if(getUnitId(x,y)==2) printf("Archer ");
-        else if(getUnitId(x,y)==1) printf("Swordsman ");
+        else if(getUnitId(x,y)==3) printf("Swordsman ");
         else printf("White Mage");
         printf("is there\n");
         }
@@ -391,16 +401,10 @@ void UpdatePlayer(Player CurrP)
 /* Algoritma */
     if (CurrP.id == 1){
         P1 = CurrP ;
-        PrintUnit(CurrentUnit(P1));
-        //printf("\nhaai ini update P1 dari player.c\n");
-    
     }
     else {
         if (CurrP.id == 2){
             P2 = CurrP;
-            PrintUnit(CurrentUnit(P2));
-            //printf("haai ini update P2 dari player.c\n");     
-    
         }
     }
 }
@@ -419,14 +423,11 @@ void NextUnit(Player *P){
         }
     }
     if (NextU(A)!=Nil){//dia bukan di akhir
-        //A=NextU(A);
+        A=NextU(A);
         while (NextU(A)!=Nil && ((!InfoU(A).atk_chance) && InfoU(A).mov_points==0)){
             A = NextU(A);
         }
-    }
-
-    if (NextU(A)!=Nil){
-        CurrentUnit(*P) = InfoU((A));
+	if(InfoU(A).mov_points!=0 || InfoU(A).atk_chance) CurrentUnit(*P) = InfoU(A);
     }
     else { //kalau sudah di akhir, kembali ke first dulu
         A = FirstU(Units(*P));
@@ -434,7 +435,7 @@ void NextUnit(Player *P){
             do{
                 A = NextU(A);
             } while(A != Nil && (InfoU(A).mov_points == 0 && (!InfoU(A).atk_chance)));
-            if(A == Nil || EQ(InfoU(A).location,U.location)){
+            if(A == Nil || EQ(InfoU(A).location,CurrentUnit(*P).location)){
                 printf("You have no available unit \n");
             }else{
                 CurrentUnit(*P) = InfoU(A);

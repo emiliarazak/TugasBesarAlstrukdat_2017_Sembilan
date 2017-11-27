@@ -228,16 +228,9 @@ void DelFirstU (ListU *L, addressU *P)
 {
 /* Kamus */
 /* Algoritma */
-    *P = FirstU(*L);
-    if (NextU(FirstU(*L))==Nil){
-        CreateEmptyU(L);
-    }
-    else {
-        FirstU(*L) = NextU(FirstU(*L));
-        PrevU(FirstU(*L)) = Nil;
-        PrevU(*P) = Nil;
-        NextU(*P) = Nil;
-    }
+    addressU temp=FirstU(*L);
+    (*P)=FirstU(*L);
+    FirstU(*L)=NextU(FirstU(*L));
 }
 
 void DelLastU (ListU *L, addressU *P)
@@ -267,7 +260,12 @@ void DelAfterU (ListU *L, addressU *Pdel, addressU Prec)
 {
 /* Kamus */
 /* Algoritma */
-    if(NextU(NextU(Prec))!=Nil){
+	*Pdel=NextU(Prec);
+	if(*Pdel!=Nil)
+	{
+		NextU(Prec)=NextU(*Pdel);
+	}
+    /*if(NextU(NextU(Prec))!=Nil){
         *Pdel=NextU(Prec);
         NextU(Prec)=NextU(*Pdel);
         PrevU(NextU(*Pdel))=Prec;
@@ -276,7 +274,7 @@ void DelAfterU (ListU *L, addressU *Pdel, addressU Prec)
     }
     else{
         DelLastU(L, Pdel);
-    }
+    }*/
 }
 
 void DelBeforeU (ListU *L, addressU *Pdel, addressU Succ)

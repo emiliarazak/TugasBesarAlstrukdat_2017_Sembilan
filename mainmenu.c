@@ -8,6 +8,6 @@ int main()
     scanf("%c",&yes);
     printf("\n\n");
     if(yes=='y') StartGame();
-    else printf ("\n");
+    else printf ("\n\n=== EXIT ===\n");
     return 0;
 }

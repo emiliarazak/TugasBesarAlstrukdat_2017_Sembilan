@@ -4,27 +4,15 @@
 #include <stdio.h>
 
 int main() {
-	printf("Player 1's turn");
-	Player P1;
-	CreatePlayer(&P1, 'r');
-	GenerateUpkeep(&P1);
+    Player P1;
+	CreatePlayer(&P1,1);
+	printf("\nAtribut Player :\n");
 	PrintAttribute(P1);
+	printf("\nCurrent Unit Player :\n");
 	PrintCurrentUnit(P1);
-
-	string input;
-	do{
-		printf("Your input: ");
-		scanf("%s", input);
-		if(input=="RECRUIT"){
-			Recruit(&P1);
-		}
-		else if(input=="CHANGE_UNIT"){
-			ChangeUnit(&P1);
-		}
-		else if(input=="MOVE"){
-			Move(&P1);
-		}
-	}while(input!="end");
-	
+	printf("\nMerekrut Unit :\n")
+	Recruit(&P1);
+	printf("\nMengganti Current Unit\n")
+	ChangeUnit(&P1);
 	return 0;
 }

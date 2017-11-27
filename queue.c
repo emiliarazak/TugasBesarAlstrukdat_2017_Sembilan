@@ -143,21 +143,5 @@ void EndTurn (Player *P)
         U = NextU(U);
     }
     UpdateGiliranUnitMap(CurrentUnit(*P).location,false);
-    //UpdatePlayer(CurrP);
             AddQ(&QTurn,temp);
-
-           /* printf("P1 List Units:\n");
-            addressU Pu;
-            Pu=FirstU(Units(P1));
-            while(Pu!=Nil){
-                PrintUnit(InfoU(Pu));printf("\n");
-                Pu=NextU(Pu);
-            }
-
-            printf("P2 List Units:\n");
-            Pu=FirstU(Units(P2));
-            while(Pu!=Nil){
-                PrintUnit(InfoU(Pu));printf("\n");
-                Pu=NextU(Pu);
-}            }*/
 }

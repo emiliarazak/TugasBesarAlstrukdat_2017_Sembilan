@@ -207,10 +207,7 @@ void Attack(Unit *X, Unit *Y) {
 			}
 		}
 		(*X).atk_chance = false;
-		//printf("r: %d\n", r);
-		//printf("chance: %d\n", chance);
 	}
-
 }
 
 /*Unit X melakukan retaliation terhadap unit Y*/
@@ -235,8 +232,6 @@ void Retaliate(Unit X, Unit *Y) {
 			else{
 				printf("King's retaliation missed!\n");
 			}
-			//printf("r: %d\n", r);
-			//printf("chance: %d\n", chance);
 		}
 		else{
 			if((X).atk_type == (*Y).atk_type){
@@ -272,8 +267,6 @@ void Retaliate(Unit X, Unit *Y) {
 						printf("White Mage's retaliation missed!\n");
 					}
 				}
-				//printf("r: %d\n", r);
-				//printf("chance: %d\n", chance);
 			}
 		}
 

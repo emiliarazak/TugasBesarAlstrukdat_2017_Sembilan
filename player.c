@@ -72,6 +72,7 @@ void Recruit (Player *P)
     Unit U;
 /* Algoritma */
     if (IsKingInTower(Id(*P))){
+        PrintMap();
         do {
             printf("\n");
             printf("Enter coordinate of empty castle: ");
@@ -399,6 +400,7 @@ void NextUnit(Player *P){
             A = NextU(A);
         }
     }
+    UpdateGiliranUnitMap(CurrentUnit(*P).location,false);
     if (NextU(A)!=Nil){//dia bukan di akhir
         A=NextU(A);
         while (NextU(A)!=Nil && ((!InfoU(A).atk_chance) && InfoU(A).mov_points==0)){
@@ -421,6 +423,7 @@ void NextUnit(Player *P){
             CurrentUnit(*P) = InfoU(A);
         }
     }
+    UpdateGiliranUnitMap(CurrentUnit(*P).location,true);
 }
 
 void RecoverGoldMove (Player *P)

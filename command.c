@@ -20,6 +20,7 @@ Kata ComExit;
 Kata CommNextUnit;
 boolean end =false;
 
+
 void initialkata()
 {
     ComStart.TabKata[1]='S';
@@ -176,6 +177,12 @@ void execute ()
     {
     CreateEmpty (&S);
         ChangeUnit(&InfoHead(QTurn));
+        end=false;
+    }
+     else if(IsKataSama (CKata,CommNextUnit))
+    {
+    CreateEmpty (&S);
+        NextUnit(&InfoHead(QTurn));
         end=false;
     }
     else if(IsKataSama (CKata,ComRecruit))

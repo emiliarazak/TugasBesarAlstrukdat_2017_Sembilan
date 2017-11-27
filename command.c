@@ -20,8 +20,6 @@ Kata ComExit;
 Kata CommNextUnit;
 boolean end =false;
 
-Stack S ;
-
 void initialkata()
 {
     ComStart.TabKata[1]='S';

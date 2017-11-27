@@ -20,7 +20,6 @@ Kata ComExit;
 Kata CommNextUnit;
 boolean end =false;
 
-
 void initialkata()
 {
     ComStart.TabKata[1]='S';
@@ -179,12 +178,6 @@ void execute ()
         ChangeUnit(&InfoHead(QTurn));
         end=false;
     }
-     else if(IsKataSama (CKata,CommNextUnit))
-    {
-    CreateEmpty (&S);
-        NextUnit(&InfoHead(QTurn));
-        end=false;
-    }
     else if(IsKataSama (CKata,ComRecruit))
     {
     CreateEmpty (&S);
@@ -239,11 +232,10 @@ void readcommand()
     STARTKATA();
     while (!IsKataSama (CKata,ComExit) && winningcheck()==0){
         execute();
-        if (winningcheck()==1) 
-			printf("\nPLAYER 1 WIN THE GAME\nPLAYER 2 LOSE THE GAME\nGAME OVER\n\n");
-        else if (winningcheck()==2) 
-			printf("\nPLAYER 2 WIN THE GAME\nPLAYER 1 LOSE THE GAME\nGAME OVER\n\n");
-        else
+        if (winningcheck()==1) printf("\n=== GAME OVER ===\n\nCongratulation Player 1! You win the game!\nSorry Player 2, You lose! :(\n\n");
+        else if (winningcheck()==2) printf("\n=== GAME OVER ===\n\nCongratulation Player 1! You win the game!\nSorry Player 2, You lose! :(\n\n");
+        else if (IsKataSama(CKata,ComExit)) printf("\n\n=== EXIT ===\n\n");
+        else 
         {
         	openingturn ();
 	        scanf("%s",command);

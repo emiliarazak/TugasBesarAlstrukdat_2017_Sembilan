@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include "player.h"
+#include "unit.h"
+#include "map.h"
 #include "queue.h"
+#include "stacklist.h"
+#include "listpoint.h"
+
 
 void CreatePlayer (Player *P,int id)
 {
@@ -72,7 +77,6 @@ void Recruit (Player *P)
     Unit U;
 /* Algoritma */
     if (IsKingInTower(Id(*P))){
-        PrintMap();
         do {
             printf("\n");
             printf("Enter coordinate of empty castle: ");
@@ -211,9 +215,10 @@ void ChangeUnit(Player *P)
 
 
 void Move(Player *P) {
-    boolean tembus;
+    boolean tembus, IsMoved;
     int x,y,i,jarak;
     POINT coordinate;
+    IsMoved = false ;
     if (CurrentUnit(*P).mov_points == 0){
         printf("You have no movement points! Change to other unit!\n");
     }
@@ -253,19 +258,22 @@ void Move(Player *P) {
                         CurrentUnit(*P).mov_points-=jarak;
                         printf("You have successfully moved to ");
                         TulisPOINT (coordinate);
+                        IsMoved = true ;
                         printf("\n");
                         UpdateUnitMap(coordinate, CurrentUnit(*P).id,Id(*P));
                         if(getBangunanId(x,y)==3)
-			{
-				CurrentUnit(*P).mov_points=0;
-				AkuisisiVillage(P,coordinate);
-    		    	}
+            			{
+            				CurrentUnit(*P).mov_points=0;
+            				AkuisisiVillage(P,coordinate);
+                		    	}
                     }
-                    else printf("You can't move there\n");
+                    /*else {
+                        printf("You can't move there\n");
+                    }*/
                 }
-                else printf("You can't move there\n");
+                //else printf("You can't move there\n");
             }
-            else if(y==Ordinat(CurrentUnit(*P).location))
+            else if( y == Ordinat(CurrentUnit(*P).location))
             {
                 jarak=abs(Absis(CurrentUnit(*P).location)-x);
                 if(jarak<=CurrentUnit(*P).mov_points)
@@ -285,30 +293,132 @@ void Move(Player *P) {
                         SetLocation(&CurrentUnit(*P),x,y);
                         CurrentUnit(*P).mov_points-=jarak;
                         printf("You have successfully moved to ");
+                        IsMoved = true ;
                         TulisPOINT (coordinate);
                         printf("\n");
                         UpdateUnitMap(coordinate, CurrentUnit(*P).id,Id(*P));
                         if(getBangunanId(x,y)==3)
-			{
-				CurrentUnit(*P).mov_points=0;
-				AkuisisiVillage(P,coordinate);
-    		    	}
+            			{
+            				CurrentUnit(*P).mov_points=0;
+            				AkuisisiVillage(P,coordinate);
+                		    	}
                     }
-                    else printf("You can't move there\n");
+                    //else printf("You can't move there\n");
                 }
             }
-            else printf("You can't move there\n");
+            //else printf("You can't move there\n");
         }
         else
         {
             printf("You can't move there\n");
-        if(getUnitOwner(x,y)==Id(*P)) printf("Your ");
-        else printf("Enemy's ");
-        if(getUnitId(x,y)==1) printf("King ");
-        else if(getUnitId(x,y)==2) printf("Archer ");
-        else if(getUnitId(x,y)==3) printf("Swordsman ");
-        else printf("White Mage");
-        printf("is there\n");
+            if(getUnitOwner(x,y)==Id(*P)) printf("Your ");
+            else printf("Enemy's ");
+            if(getUnitId(x,y)==1) printf("King ");
+            else if(getUnitId(x,y)==2) printf("Archer ");
+            else if(getUnitId(x,y)==3) printf("Swordsman ");
+            else printf("White Mage");
+            printf("is there\n");
+        }
+        while (!IsMoved) {
+            printf("\n");
+            printf("You can't move there! \n");
+            printf("You have to watch your movement points and the coordinate you want to go! \n");
+            printf("\n");
+            do {
+                printf("Please enter cell's coordinate x y: ");
+                scanf("%d %d", &x, &y);
+                if (x<0 || x> M.NAbsisEff || y<0 || y>M.NOrdEff){
+                    printf("The cell's coordinate you entered is not in the map!\n");
+                    printf("Enter the cell's coordinate in range of map\n");
+                }
+            }
+            while (x<0 || x> M.NAbsisEff || y<0 || y>M.NOrdEff);
+            coordinate = MakePOINT(x,y);
+            //printf("koordinat : %d %d\n", Absis(coordinate), Ordinat(coordinate));
+            if (IsNoUnit(x,y))
+            {
+                if(x==Absis(CurrentUnit(*P).location))
+                {
+                    jarak=abs(Ordinat(CurrentUnit(*P).location)-y);
+                    if(jarak<=CurrentUnit(*P).mov_points)
+                    {
+                        tembus = false;
+                        i=Ordinat(CurrentUnit(*P).location);
+                        while (!tembus && i!=y)
+                        {
+                            if(y<i) i--;
+                            else i++;
+                            if(!IsNoUnit(x,i)) tembus=true;
+                        }
+                        if (!tembus)
+                        {
+                            Push (&S,CurrentUnit(*P).location);
+                            UpdateUnitMap(CurrentUnit(*P).location,0,0);
+                            SetLocation(&CurrentUnit(*P),x,y);
+                            CurrentUnit(*P).mov_points-=jarak;
+                            printf("You have successfully moved to ");
+                            TulisPOINT (coordinate);
+                            IsMoved = true ;
+                            printf("\n");
+                            UpdateUnitMap(coordinate, CurrentUnit(*P).id,Id(*P));
+                            if(getBangunanId(x,y)==3)
+                            {
+                                CurrentUnit(*P).mov_points=0;
+                                AkuisisiVillage(P,coordinate);
+                                    }
+                        }
+                        /*else {
+                            printf("You can't move there\n");
+                        }*/
+                    }
+                    //else printf("You can't move there\n");
+                }
+                else if( y == Ordinat(CurrentUnit(*P).location))
+                {
+                    jarak=abs(Absis(CurrentUnit(*P).location)-x);
+                    if(jarak<=CurrentUnit(*P).mov_points)
+                    {
+                        tembus = false;
+                        i=Absis(CurrentUnit(*P).location);
+                        while (!tembus && i!=x)
+                        {
+                            if(x<i) i--;
+                            else i++;
+                            if(!IsNoUnit(i,y)) tembus=true;
+                        }
+                        if (!tembus)
+                        {
+                            Push (&S,CurrentUnit(*P).location);
+                            UpdateUnitMap(CurrentUnit(*P).location,0,0);
+                            SetLocation(&CurrentUnit(*P),x,y);
+                            CurrentUnit(*P).mov_points-=jarak;
+                            printf("You have successfully moved to ");
+                            IsMoved = true ;
+                            TulisPOINT (coordinate);
+                            printf("\n");
+                            UpdateUnitMap(coordinate, CurrentUnit(*P).id,Id(*P));
+                            if(getBangunanId(x,y)==3)
+                            {
+                                CurrentUnit(*P).mov_points=0;
+                                AkuisisiVillage(P,coordinate);
+                                    }
+                        }
+                        //else printf("You can't move there\n");
+                    }
+                }
+                //else printf("You can't move there\n");
+            }
+            else
+            {
+                printf("You can't move there\n");
+                if(getUnitOwner(x,y)==Id(*P)) printf("Your ");
+                else printf("Enemy's ");
+                if(getUnitId(x,y)==1) printf("King ");
+                else if(getUnitId(x,y)==2) printf("Archer ");
+                else if(getUnitId(x,y)==3) printf("Swordsman ");
+                else printf("White Mage");
+                printf("is there\n");
+            }
         }
     }
 }
@@ -336,7 +446,6 @@ void Undo(Player *P)
     }
 }
 
-/* DEBO edit yang info sama Turn, tolong dicekk yaa thankss :) */
 void InfoMap (){
 /* Kamus */
     int x, y;
@@ -406,7 +515,7 @@ void NextUnit(Player *P){
         while (NextU(A)!=Nil && ((!InfoU(A).atk_chance) && InfoU(A).mov_points==0)){
             A = NextU(A);
         }
-	if(InfoU(A).mov_points!=0 || InfoU(A).atk_chance) CurrentUnit(*P) = InfoU(A);
+    	if(InfoU(A).mov_points!=0 || InfoU(A).atk_chance) CurrentUnit(*P) = InfoU(A);
     }
     else { //kalau sudah di akhir, kembali ke first dulu
         A = FirstU(Units(*P));
@@ -424,6 +533,7 @@ void NextUnit(Player *P){
         }
     }
     UpdateGiliranUnitMap(CurrentUnit(*P).location,true);
+            
 }
 
 void RecoverGoldMove (Player *P)
